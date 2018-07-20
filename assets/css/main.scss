@@ -5,6 +5,10 @@
 @import "minima";
 @import "vendor/font-awesome/font-awesome";
 
+h1 {
+    text-align: center;
+}
+
 h2 {
     margin-top: 2em;
 }
@@ -87,3 +91,5 @@ a.site-title {
         margin-right: 1.3em;
     }
 }
+
+.center { text-align: center; }

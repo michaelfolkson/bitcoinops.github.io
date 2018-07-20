@@ -1,5 +1,5 @@
 ---
-title: 'Field Report: Xapo UTXO Consolidation'
+title: 'Field Report: Consolidation of 4 Million UTXOs at Xapo'
 permalink: /en/xapo-utxo-consolidation
 name: 2018-07-30-xapo-utxo-consolidation
 type: posts
@@ -7,15 +7,22 @@ layout: page
 lang: en
 version: 1
 ---
-
-
----
+{:.center}
+*by [Anthony Towns](https://twitter.com/ajtowns)<br>Developer on Bitcoin Core
+at [Xapo][]*
 
 As mentioned in [newsletter #3][newsletter 3], the past few months of low
 transaction fees has made it a great time to do UTXO consolidation!
 Consolidation has been one of a variety of activities [Xapo][Xapo] has been
 undertaking to be prepared for the next time fees spike like they did in the
 last few months of 2017.
+
+{% assign img1_label = "Plot of total Bitcoin UXTOs, January - July 2018" %}
+
+{:.center}
+![{{img1_label}}](/img/posts/utxo-consolidation-2018.png)<br>
+*{{img1_label}},
+source: [Statoshi](https://statoshi.info/dashboard/db/unspent-transaction-output-set?panelId=6&fullscreen&from=1514759562608&to=1532039707168)*
 
 [newsletter 3]: https://bitcoinops.org/en/newsletters/2018/07/10/#dashboard-items
 [Xapo]: https://www.xapo.com/
@@ -77,3 +84,8 @@ as a whole has been minimal, as has the cost to us.
 [redditors1]: https://www.reddit.com/r/BitcoinDiscussion/comments/8ocyc9/massive_consolidation_currently_underway/
 [redditors2]: https://www.reddit.com/r/Bitcoin/comments/8p3y5b/does_xapo_spamming_the_blockchain/
 
+## Additional resources
+
+- [Techniques to reduce transaction fees: consolidation](https://en.bitcoin.it/wiki/Techniques_to_reduce_transaction_fees#Consolidation) - Bitcoin Wiki
+- [How to cheaply consolidate coins to reduce miner fees](https://en.bitcoin.it/wiki/How_to_cheaply_consolidate_coins_to_reduce_miner_fees) - Bitcoin Wiki
+- [What are some best practices regarding the usage of consolidations and fanouts?](https://bitgo.freshdesk.com/support/solutions/articles/27000044185-what-are-some-best-practices-regarding-the-usage-of-consolidations-and-fanouts-) - BitGo
