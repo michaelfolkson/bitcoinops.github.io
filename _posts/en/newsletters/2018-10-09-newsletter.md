@@ -22,11 +22,8 @@ provided by the workshop organizers or reading the [transcripts][]
 provided by Bryan Bishop.
 
 For convenience, at the end of each summary we directly link to its
-video and transcript (and paper, if available).  We also indicate
-whether its primary idea would require a *hard fork*, a *soft fork*, or
-is *possible now* if software implementing the idea is made available.
-Talks are listed below in the order they appeared in the workshop
-schedule.
+video and transcript (and paper, if available).  Talks are listed below
+in the order they appeared in the workshop schedule.
 
 **Warning:** the following summaries may contain errors due to many of
 the talks describing subjects well beyond the expertise of the summary
@@ -47,7 +44,7 @@ Although the talk was not about a specific proposal, an example proposal
 it evaluated was to reduce the subsidy by 20% every time the network's
 proof of work security doubles (measured by block-creation difficulty).
 
-*[video][vid subsidy], [transcript][tx subsidy], soft fork*
+*[video][vid subsidy], [transcript][tx subsidy]*
 
 ### Forward blocks: on-chain capacity increases without a hard fork
 
@@ -91,7 +88,7 @@ enough to allow them to include the same transactions that previously
 appeared in the extension blocks.
 
 *[video][vid forward blocks], [transcript][tx forward blocks],
-[paper][paper forward blocks], soft fork*
+[paper][paper forward blocks]*
 
 ### Compact multi-signatures for smaller blockchains
 
@@ -112,8 +109,7 @@ actually worked together to create a threshold signature (i.e.  k-of-m
 signers, e.g. 2-of-3 multisig).
 
 *[video][vid bls msig], [transcript][tx bls msig], [paper
-(pre-print)][paper bls msig], soft fork using segwit script upgrade
-mechanism*
+(pre-print)][paper bls msig]*
 
 ### Accumulators: a scalable drop-in replacement for merkle trees
 
@@ -133,8 +129,7 @@ per block), and validation that one or more elements are members of a
 set could potentially be much faster (although this has not yet been
 fully tested).
 
-*[video][vid accumulators], [transcript][tx accumulators], soft fork for
-new applications such as UTXO set commitments*
+*[video][vid accumulators], [transcript][tx accumulators]*
 
 ### Scriptless ECDSA
 
@@ -223,7 +218,7 @@ months significantly more conservative. It's going to be another 6
 months before people are even thinking about it. I don't think we're
 going to get any new soft-forks in the next year."
 
-*(no video), [transcript][tx script], soft forks*
+*(no video), [transcript][tx script]*
 
 ## Footnotes
 
@@ -274,7 +269,6 @@ going to get any new soft-forks in the next year."
 [schnorr pre-bip]: https://github.com/sipa/bips/blob/bip-schnorr/bip-schnorr.mediawiki
 [pairing-based cryptography]: https://en.wikipedia.org/wiki/Pairing-based_cryptography 
 [bls sigs]: https://en.wikipedia.org/wiki/Boneh%E2%80%93Lynn%E2%80%93Shacham
-[forced fork]: https://petertodd.org/2016/forced-soft-forks
 [scriptless scripts transcript]: https://scalingbitcoin.org/transcript/stanford2017/using-the-chain-for-what-chains-are-good-for
 [eltoo protocol]: https://blockstream.com/2018/04/30/eltoo-next-lightning.html
 [bitcoin-dev timewarp]: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-August/016316.html
