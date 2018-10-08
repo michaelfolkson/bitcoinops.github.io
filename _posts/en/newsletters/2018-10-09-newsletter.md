@@ -239,14 +239,14 @@ going to get any new soft-forks in the next year."
     produce more blocks on average, so they get the head start more
     often and less of their proof of work is wasted.
 
-    For two perfectly fair miners half a world apart, the network delay
-    can be about one second, meaning a small miner far away from most
-    other miners is likely to only be productive for 599 of the average
-    of 600 seconds (ten minutes) between blocks.  A 1/600 loss of
-    efficiency (0.16%) is not too bad, but if the block frequency were
+    For two perfectly fair miners half a world apart, the minimum practical network delay
+    between them is about 0.2 seconds, meaning a small miner far away from most
+    other miners is likely to only be productive for 599.8 of the average
+    of 600.0 seconds (ten minutes) between blocks.  A 0.2/600.0 loss of
+    efficiency (0.03%) is probably acceptable, but if the block frequency were
     increased, the loss of efficiency would increase also: at one block
-    per minute, the loss of efficiency would be 1.66%; at one block per
-    six seconds, 16.66%.
+    per minute, the loss of efficiency would be 0.33%; at one block per
+    six seconds, 3.33%.
 
     The small miner could increase his efficiency by moving closer to
     other miners or even completely eliminate the efficiency loss by
