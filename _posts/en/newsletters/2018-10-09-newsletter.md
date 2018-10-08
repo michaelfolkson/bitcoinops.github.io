@@ -44,8 +44,7 @@ If the Bitcoin userbase did think it was overpaying for security, the
 talk suggests options for reducing the amount of subsidy paid in the
 short term as the amount of security increases---but still ensuring that
 no more than 21 million bitcoins are paid overall in
-subsidy---potentially allowing the subsidy to last much longer than it
-is currently predicted to last.
+subsidy---potentially allowing the subsidy to last much longer than currently expected.
 
 Although the talk was not about a specific proposal, an example proposal
 it evaluated was to reduce the subsidy by 20% every time the network's
@@ -99,7 +98,7 @@ appeared in the forward blocks.
 
 ### Compact multi-signatures for smaller blockchains
 
-*Research by Dan Boneh, Manu Drijvers and Gregory Neven*
+*Research by Dan Boneh, Manu Drijvers, and Gregory Neven*
 
 This talk describes an alternative to the Schnorr
 signature scheme described in the [MuSig paper][] that makes use of [pairing-based cryptography][],
@@ -118,7 +117,7 @@ signers, e.g. 2-of-3 multisig).
 
 ### Accumulators: a scalable drop-in replacement for merkle trees
 
-*Research by Benedikt Bünz, Benjamin Fisch and Dan Boneh*
+*Research by Benedikt Bünz, Benjamin Fisch, and Dan Boneh*
 
 In Bitcoin and other cryptocurrencies, scalable commitments to sets of
 information---such as transactions or UTXOs---are normally made using
@@ -161,8 +160,7 @@ and witness data---savings which increase the number of channels that
 can be opened or closed in a block and which reduces the amount of
 transaction fee paid by users of Lightning Network payment channels.
 
-*[video][vid scriptless ecdsa], [transcript][tx scriptless ecdsa], possible
-now*
+*[video][vid scriptless ecdsa], [transcript][tx scriptless ecdsa]*
 
 ## Discussion: the evolution of bitcoin script
 
@@ -186,11 +184,14 @@ willing to adopt them:
 
 - **OP_CHECKSIGFROMSTACK:** makes it possible to create covenants that
   restrict what outputs a particular coin can be spent to.  For example,
-  you could require that your bitcoins can only be sent to an address
-  that requires giving you 1,000 blocks (1 week) to evaluate the
-  situation and possibly send them back to a whitelisted address before
-  they can be spent to any non-whitelisted address.  (It was noted
-  that some developers are opposed to enabling this for
+  you could put a mandatory timeout of one week on spends from your cold
+  wallet.  During the timeout, you could only spend the coins back
+  into your cold wallet.  But if you waited for the timeout to expire,
+  you could spend the coins to any arbitrary address.  This means that
+  if someone stole a copy of your cold wallet's private key, you could
+  use this mechanism to prevent them from spending your bitcoins by
+  returning them to your cold wallet during the timeout period.  (It
+  was noted that some developers are opposed to enabling the simplest form of this opcode for
   fungibility reasons, although alternative approaches may be more
   acceptable.)
 
@@ -255,7 +256,7 @@ newsletter's author.
     other miners or even completely eliminate the efficiency loss by
     merging with them, but this is the mining centralization that it's
     essential to avoid in Bitcoin if we want to prevent miners from
-    being able to effectively restrict (censor) which transactions are
+    being able to easily censor which transactions are
     included in blocks.
 
 {% include references.md %}
