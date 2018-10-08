@@ -254,20 +254,20 @@ going to get any new soft-forks in the next year."
 {% include references.md %}
 
 [videos]: https://tokyo2018.scalingbitcoin.org/#remote-participation
-[transcripts]: http://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/
+[transcripts]: https://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/
 [vid subsidy]: https://youtu.be/y8hJ0VTPE34?t=39
-[tx subsidy]: http://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/playing-with-fire-adjusting-bitcoin-block-subsidy/
+[tx subsidy]: https://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/playing-with-fire-adjusting-bitcoin-block-subsidy/
 [vid forward blocks]: https://youtu.be/y8hJ0VTPE34?t=3744
-[tx forward blocks]: http://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/forward-blocks/
+[tx forward blocks]: https://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/forward-blocks/
 [paper forward blocks]: http://freico.in/forward-blocks-scalingbitcoin-paper.pdf
 [vid bls msig]: https://youtu.be/IMzLa9B1_3E?t=29
-[tx bls msig]: http://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/compact-multi-signatures-for-smaller-blockchains/
+[tx bls msig]: https://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/compact-multi-signatures-for-smaller-blockchains/
 [paper bls msig]: https://eprint.iacr.org/2018/483.pdf
 [vid accumulators]: https://youtu.be/IMzLa9B1_3E?t=3522
-[tx accumulators]: http://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/accumulators/
+[tx accumulators]: https://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/accumulators/
 [vid scriptless ecdsa]: https://youtu.be/3mJURLD2XS8?t=3624
-[tx scriptless ecdsa]: http://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/scriptless-ecdsa/
-[tx script]: http://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/bitcoin-script/
+[tx scriptless ecdsa]: https://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/scriptless-ecdsa/
+[tx script]: https://diyhpl.us/wiki/transcripts/scalingbitcoin/tokyo-2018/bitcoin-script/
 [musig paper]: https://eprint.iacr.org/2018/068
 [schnorr pre-bip]: https://github.com/sipa/bips/blob/bip-schnorr/bip-schnorr.mediawiki
 [pairing-based cryptography]: https://en.wikipedia.org/wiki/Pairing-based_cryptography 
