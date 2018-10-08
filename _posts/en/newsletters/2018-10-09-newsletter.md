@@ -87,8 +87,8 @@ talk describes a novel way of combining extension blocks and the
 time-warp attack to allow both upgraded nodes and old nodes to gain the
 same capacity increase and see all the same transactions for validation
 while simultaneously slightly reducing mining centralization risk.
-Upgraded nodes would validate one or more extension blocks ("forward blocks") providing
-additional block space with a 15 minute average interval, but the upgraded nodes would
+Upgraded nodes would validate one or more extension blocks (called "forward blocks") that provide
+additional block space with a centralization-reducing 15 minute average interval, but the upgraded nodes would
 also restrict the time stamps in legacy blocks to ensure a permanent
 (but limited) time warp attack increased the frequency of legacy blocks
 enough to allow them to include the same transactions that previously
