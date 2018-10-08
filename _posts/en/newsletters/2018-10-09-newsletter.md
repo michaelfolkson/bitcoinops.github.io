@@ -223,6 +223,13 @@ going to get any new soft-forks in the next year."
 
 *(no video), [transcript][tx script]*
 
+## Special thanks
+
+We thank Andrew Poelstra, Anthony Towns, Bryan Bishop, and Pieter Wuille
+for providing suggestions or answering questions related to the content
+of this newsletter.  Any remaining errors are entirely the fault of the
+newsletter's author.
+
 ## Footnotes
 
 [^freq-pow-waste]:
