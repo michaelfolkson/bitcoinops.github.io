@@ -101,16 +101,14 @@ appeared in the forward blocks.
 
 *Research by Dan Boneh, Manu Drijvers and Gregory Neven*
 
-This talk describes an alternative to the Bellare-Neven-based Schnorr
-signature scheme described in the [MuSig paper][] and [proposed as a
-standard][schnorr pre-bip] for Bitcoin by Pieter Wuille.  The
-alternative method makes use of [pairing-based cryptography][],
+This talk describes an alternative to the Schnorr
+signature scheme described in the [MuSig paper][] that makes use of [pairing-based cryptography][],
 specifically an adaptation of the [Boneh-Lynn-Shacham (BLS) signature
 scheme][bls sigs].  Although pairing-based schemes require an additional
 fundamental security assumption beyond those made by both Bitcoin's
 current ECDSA scheme and proposed Schnorr scheme, the authors present
 evidence that their scheme would produce smaller signatures in general,
-be much more computationally efficient in some multisignature use cases,
+allow non-interactive signature aggregation,
 and make it possible to prove which members of the set of signers
 actually worked together to create a threshold signature (i.e.  k-of-m
 signers, e.g. 2-of-3 multisig).
