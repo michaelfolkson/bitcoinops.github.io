@@ -33,12 +33,19 @@ author.
 
 *Research by Anthony (AJ) Towns*
 
-This talk asks whether Bitcoin pays more for security than it needs to
-and then considers options for reducing the amount of subsidy paid in
-the short term as the amount of security increases---still ensuring that
-no more than 21 million bitcoins are paid overall in subsidy, but
-potentially allowing the subsidy to last much longer and also
-potentially reducing the amount of extraneous security (if it exists).
+This talk makes an intellectual inquiry into whether Bitcoin pays more
+for security than it needs to---and what we could do if we decided it
+does pay too much.  The speaker makes clear that he's interested in
+considering the questions and providing possible answers but that he's
+neither suggesting that there's a problem nor advocating for any
+solution.
+
+If the Bitcoin userbase did think it was overpaying for security, the
+talk suggests options for reducing the amount of subsidy paid in the
+short term as the amount of security increases---but still ensuring that
+no more than 21 million bitcoins are paid overall in
+subsidy---potentially allowing the subsidy to last much longer than it
+is currently predicted to last.
 
 Although the talk was not about a specific proposal, an example proposal
 it evaluated was to reduce the subsidy by 20% every time the network's
