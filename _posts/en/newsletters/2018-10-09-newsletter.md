@@ -6,14 +6,11 @@ type: newsletter
 layout: newsletter
 lang: en
 ---
-This week's newsletter includes a summary of several notable talks
-presented at the Scaling Bitcoin workshop this past weekend.
-
-*Note:* this week's newsletter consists entirely of Scaling Bitcoin
-coverage as a result of there being almost nothing else to report in our
-usual Action Items, News, and Notable Code Changes sections.  We hope to
-return to our usual format next week as various Bitcoin infrastructure
-contributors start returning home from the workshop.
+This week's newsletter consists entirely of summaries of several notable
+talks presented at the Scaling Bitcoin workshop last weekend, since
+there was very little to report in our usual Action Items, News, and
+Notable Code Changes sections. We hope to return to our usual format
+next week.
 
 ## Workshop summary: Scaling Bitcoin V (Tokyo 2018)
 
