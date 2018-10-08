@@ -127,12 +127,10 @@ generating a proof whose size and validation cost is roughly *log2(n)*
 for a set of *n* elements.
 
 This talk describes an alternative method based on RSA accumulators that
-provides many potential benefits: the size of a proof is constant no
-matter how many elements are members of the set, adding or removing
+provides potential benefits: the size of a proof is constant no
+matter how many elements are members of the set, and adding or removing
 elements from an accumulator can be efficiently batched (e.g. one update
-per block), and validation that one or more elements are members of a
-set could potentially be much faster (although this has not yet been
-fully tested).
+per block).
 
 *[video][vid accumulators], [transcript][tx accumulators]*
 
