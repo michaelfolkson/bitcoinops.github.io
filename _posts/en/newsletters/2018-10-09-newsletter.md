@@ -177,10 +177,10 @@ as theoretically possible to accomplish in 2019 if the community is
 willing to adopt them:
 
 - **Schnorr signature scheme:** an opt-in feature providing smaller
-  signatures in all cases, much smaller public key and signature data
-  for cooperative multisigs, and faster validation.  Easier
-  compatibility with scriptless scripts.  See Pieter Wuille's [proposed
-  BIP][schnorr pre-bip].
+  signatures in all cases, faster validation, much smaller public key
+  and signature data for cooperative multisigs, and easier compatibility
+  with scriptless scripts.  See Pieter Wuille's [proposed BIP][schnorr
+  pre-bip].
 
 - **SIGHASH_NOINPUT_UNSAFE:** the ability to create spends without
   explicitly referencing which output you want to spend.  Allows
