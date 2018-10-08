@@ -166,11 +166,9 @@ transaction fee paid by users of Lightning Network payment channels.
 *[video][vid scriptless ecdsa], [transcript][tx scriptless ecdsa], possible
 now*
 
-## Discussion wrap-up: the evolution of bitcoin script
+## Discussion: the evolution of bitcoin script
 
-*Discussion wrap-up presented by Olaoluwa Osuntokun*
-
-This wrap-up of a two-hour discussion group briefly mentioned a large
+A two-hour discussion group focused on this topic mentioned a large
 variety of proposed changes to Bitcoin's Script language---far too many
 to mention here even in summary.  However, a few changes were mentioned
 as theoretically possible to accomplish in 2019 if the community is
@@ -193,8 +191,8 @@ willing to adopt them:
   you could require that your bitcoins can only be sent to an address
   that requires giving you 1,000 blocks (1 week) to evaluate the
   situation and possibly send them back to a whitelisted address before
-  they can be spent to any non-whitelisted address.  (The presenter
-  notes that some developers are opposed to enabling this for
+  they can be spent to any non-whitelisted address.  (It was noted
+  that some developers are opposed to enabling this for
   fungibility reasons, although alternative approaches may be more
   acceptable.)
 
@@ -216,7 +214,7 @@ willing to adopt them:
   watchtowers that send breach remedy transactions on behalf of offline
   users, or it could be useful for fee bumping group transactions.
 
-However, the presenter concluded this section of the wrap-up by saying,
+However, one member of the discussion group suggested that
 "the only people who have comfort with soft-forks are unlikely to
 propose a soft-fork and produce software that would be adopted. People
 are going to fight anything that adds anything, especially considering
