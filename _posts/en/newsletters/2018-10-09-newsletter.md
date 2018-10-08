@@ -136,27 +136,29 @@ fully tested).
 
 *[video][vid accumulators], [transcript][tx accumulators]*
 
-### Scriptless ECDSA
+### Scriptless ECDSA security for Lightning Network payment channels
 
 *Research by Conner Fromknecht*
 
-At Scaling Bitcoin IV (Stanford 2017), Andrew Poelstra
-[presented][scriptless scripts transcript] his existing "scriptless
-scripts" work that suggests several ways outputs can be encumbered in
-similar ways to a few of the things now possible with Bitcoin Script but
-by using only Schnorr-based keys and signatures.  This method has the
-advantage of being just as secure as the Script-based mechanism but also
-maximally compact, faster to validate, and completely invisible to third
-parties (providing privacy, increased fungibility, and potentially
-increased security from the fungibility).
+Routable payment channels such as those used by Lightning Network
+currently use multiple opcodes from the Script language that are
+enforced by Bitcoin's consensus rules.  Previous work on [scriptless
+scripts][scriptless scripts transcript] by Andrew Poelstra has
+[suggested][ln scriptless scripts] that some or all of the opcodes
+currently used could be replaced by Schnorr public keys and signatures
+that would be created privately (offchain) between the participants in
+the payment channel.  Consensus rules would still require that a
+spending transaction have a valid signature that referenced a known
+public key, but none of the other security-related information would
+appear onchain, reducing data consumption and fees, improving privacy
+and fungibility, and potentially improving security.
 
-Bitcoin doesn't currently support Schnorr signatures and no complete
-design for it has been proposed (although such a proposal may not be far
-off), so this talk describes proof-of-concept results from a partial
-implementation of scriptless-scripts that's compatible with Bitcoin's
-current keys and signatures, ECDSA.  The talk especially focuses on the
-use of scriptless scripts in payment channels such as those used by
-Lightning Network, with some impressive savings in the size of scripts
+Bitcoin doesn't currently support Schnorr signatures and no
+complete design for it has been proposed (although such a proposal may
+not be far off), so this talk describes proof-of-concept results from a
+partial implementation of payment channel scriptless scripts that's
+compatible with Bitcoin's current ECDSA keys and signatures.
+Some impressive savings are achieved in the size of scripts
 and witness data---savings which increase the number of channels that
 can be opened or closed in a block and which reduces the amount of
 transaction fee paid by users of Lightning Network payment channels.
@@ -277,3 +279,4 @@ going to get any new soft-forks in the next year."
 [scriptless scripts transcript]: https://scalingbitcoin.org/transcript/stanford2017/using-the-chain-for-what-chains-are-good-for
 [eltoo protocol]: https://blockstream.com/2018/04/30/eltoo-next-lightning.html
 [bitcoin-dev timewarp]: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-August/016316.html
+[ln scriptless scripts]: https://lists.launchpad.net/mimblewimble/msg00086.html
