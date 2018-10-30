@@ -48,13 +48,15 @@ projects.
 
 - **Overt ASICBoost support for S9 miners:** support for this
   efficiency-improving feature was announced by both [Bitmain][bitmain oab]
-  and [Braiins][braiins oab] this week.  Both covert and overt ASICBoost
-  create multiple proposed headers whose first 64 bytes differ but whose
-  remaining 16 bytes are compatible with any of the proposals, allowing
-  a miner who changes those final bytes to reduce the amount of
-  computation necessary to generate a SHA256d solution for each
-  proposal.  Early estimates indicate an improvement of 10% (or perhaps
-  more) on existing Antminer S9 hardware.
+  and [Braiins][braiins oab] this week.  ASICBoost takes advantage of the fact
+  that the SHA256 algorithm used in Bitcoin mining first splits the 80 byte block
+  header into 64 byte chunks.  If a miner can find multiple proposed block
+  headers where the first chunk of 64 bytes are different but start of the next
+  chunk of 64 bytes are the same, then they can try different combinations of
+  the first chunk and second chunk to reduce the total number of hashing
+  operations they need to carry out to find a valid block.  Early estimates
+  indicate an improvement of 10% (or perhaps more) on existing Antminer S9
+  hardware.
 
     The overt form of ASICBoost alters the versionbits field in the
     block header, which can cause programs such as Bitcoin Core to display
