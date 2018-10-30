@@ -9,9 +9,9 @@ lang: en
 This week's newsletter suggests an update for C-Lightning users,
 describes a discussion about BIP69 deterministic input/output ordering
 on the mailing list, notes public overt ASICBoost support is available
-for miners using Antminer S9, and provides links to information about
+for miners using Antminer S9, provides links to information about
 Square's open sourced Subzero HSM-based multisig cold storage solution
-and the recent Lightning Network Residency and Hackday in New York City.
+and summarizes the recent Lightning Network Residency and Hackday in New York City.
 Also included are selected recent Q&A from Bitcoin StackExchange and
 descriptions of notable code changes in popular Bitcoin infrastructure
 projects.
@@ -73,7 +73,7 @@ projects.
   [Beancounter][] auditing tool.
 
 - **Lightning Residency and Hackday:** last week [Chaincode Labs][]
-  hosted a four-day [Lightning Network Residency][] program to help
+  hosted a five-day [Lightning Network Residency][] program to help
   onboard developers to the fledgling protocol.  Following this, Fulmo
   organized their fourth [Lightning Network Hackday][] (actually two
   days) also in New York City with a few speeches, many demos, and lots
