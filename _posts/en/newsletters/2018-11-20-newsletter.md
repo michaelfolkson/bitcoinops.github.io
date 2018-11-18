@@ -28,11 +28,11 @@ determine which changes to adopt for the forthcoming Lightning Protocol
 Specification 1.1.  Thirty proposals were accepted at a
 high-level---meaning full specifications for each proposal are not
 necessarily defined or agreed upon yet---but the basic outline of the
-new features is available.  In linking to the [working outline][ln1.1
-outline], Rusty Russell noted the following highlights: "multi-path
+new features is available.  Below, Optech has attempted to briefly
+describe the highlights from the meeting mentioned in an email linking
+to the [working outline][ln1.1 outline] by Rusty Russell: "multi-path
 payments, dual-funded channels, splicing, wumbo, hidden destinations,
-and many gossip improvements."  The points below are Optech's attempt to
-briefly summarize these changes.
+and many gossip improvements."
 
 - **Multi-path payments:** the current normal way to make a payment over
   LN is using a single path.  Alice pays Charlie through her channel to
