@@ -160,16 +160,6 @@ and many gossip improvements."
     is also called rendez-vous routing: [1][cjp rz], [2][zmn rz], [3][zmn
     rz packetswitch].
 
-- **Gossip improvements:** these include a switch to gossip messages
-  protected by Schnorr signatures (with default backwards
-  compatibility), an ability to query for routing updates since a
-  previous time to help mobile nodes that just came back online quickly
-  build a routing table for sending payments, and a new field to allow
-  nodes to tell their peers and potential peers which block chains
-  they're interested in to avoid the wasted effort of sharing data about
-  uninteresting chains.  (We didn't find any recent threads about these
-  particular proposals, so there are no reference links.)
-
 ## News
 
 {% comment %}<!-- math for first sub-bullet:
