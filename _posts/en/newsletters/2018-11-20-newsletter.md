@@ -69,7 +69,8 @@ and many gossip improvements."
   of her money and none of Bob's money.  This makes it very easy for
   users to accept new incoming channels as they don't cost the receiving
   user anything---not even any opportunity costs (except for operating
-  the LN software).  However, this also means that channels can only be
+  the LN software) as the initiator even pays channel closing costs.
+  However, this also means that channels can only be
   used in one direction initially---Alice can pay Bob or route payments
   through Bob, but Alice can't receive payments from Bob or from any
   routing path including Bob until Alice has sent Bob some money.  This
