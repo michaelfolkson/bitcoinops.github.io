@@ -143,7 +143,7 @@ and many gossip improvements."
   receives the payment, he can simply return the success preimage to
   Dan, who returns it to Charlene, and so forth back to Alice.
 
-    However, Tor also has a hidden service mode where the both the
+    However, Tor also has a hidden service mode where both the
     sender and the recipient each choose part of the path so that
     neither of them can determine exactly where the packets came from or
     went---providing significantly improved privacy.  This proposal for
