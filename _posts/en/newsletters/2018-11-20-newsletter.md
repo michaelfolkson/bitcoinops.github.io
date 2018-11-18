@@ -30,7 +30,7 @@ high-level---meaning full specifications for each proposal are not
 necessarily defined or agreed upon yet---but the basic outline of the
 new features is available.  In linking to the [working outline][ln1.1
 outline], Rusty Russell noted the following highlights: "multi-path
-payments, dual-funded channels, splicing , wumbo, hidden destinations,
+payments, dual-funded channels, splicing, wumbo, hidden destinations,
 and many gossip improvements."  The points below are Optech's attempt to
 briefly summarize these changes.
 
