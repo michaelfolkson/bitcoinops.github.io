@@ -46,17 +46,22 @@ and many gossip improvements."
     Multipath payments provide a solution to this problem: if Alice
     wants to send 15% of her funds, she can send 7.5% to Charlie through
     her channel with Bob and 7.5% through her channel with Dan (who also
-    has a channel with Charlie).  Although this increases the complexity
-    of implementations somewhat due to having to deal with some partial
-    payments failing some of the time, it doesn't change the security as
-    all payments can use the normal LN security mechanism of releasing a
-    pre-image in order to claim payments (in this case, claiming
-    multiple payments with the same preimage rather than just one).
+    has a channel with Charlie).  Although the partial payments are
+    routed through separate paths, they can each commit to the same
+    hash Alice would've used to send a single-path payment.  If Charlie
+    receives multiple payments within a reasonable time period that
+    equal or exceed the expected amount, he can reveal their shared
+    preimage to claim them simultaneously---providing the same security
+    currently used for single-path payments.  This also works if some
+    other party along the path with sufficient channel capacity
+    aggregates together the partial payments and forwards a single
+    payment along the remainder of the path.
 
-    For more information, see the following Lightning-Dev threads
-    which often call this feature Atomic
-    Multi-path Payments (AMP): [1][roasbeef amp], [2][zmn base amp],
-    [3][pickhardt local amp].
+    For more information, see the following Lightning-Dev threads which
+    often call this feature Atomic Multi-path Payments (AMP): [an early
+    proposal with separate hashes/preimages][roasbeef amp], [something
+    like the currently favored proposal][zmn base amp], [a possibly too
+    optimistic proposal][pickhardt local amp].
 
 - **Dual-funded channels:** a nice feature of the current implementation
   is that only one party to the channel needs to initially commit any
