@@ -308,6 +308,13 @@ commits].*
   in [Newsletter #19][] and is a major step towards making LN safer for
   everyday users.
 
+## Special thanks
+
+We thank Chris Decker, PracticalSwift, and Rene Pickhardt for providing
+suggestions or answering questions related to the content of this
+newsletter.  Any remaining errors are entirely the fault of the
+newsletter's author.
+
 {% include references.md %}
 {% include linkers/issues.md issues="2075,14411,2124,1535,1512,14441" %}
 
