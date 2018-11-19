@@ -95,20 +95,29 @@ and many gossip improvements."
     rbf].  See also [Newsletter #21][].
 
 - **Splicing:** when you currently open an LN channel, you can't
-  increase that channel's maximum balance or withdraw funds from that
-  channel without closing the whole channel and opening another between
+  increase that channel's maximum balance or send funds onchain to
+  another person without closing the whole channel and opening another between
   the same parties.  Closing one channel and opening another requires
   completely stopping all payments between the two parties until an
   appropriate number of onchain confirmations have been received for the
   close-and-reopen transaction.
 
-    This problem can be solved through splicing, which is creating an
-    onchain payment cooperatively between the channel parties that adds
-    or removes funds from the channel.  This provides a significant
-    advantage: some or all of the original funds in the channel can
-    continue to be used for fast and secure offchain payments while the
-    participants wait for the onchain splice-in or splice-out
-    transaction to confirm.
+    Splicing provides a solution where parties cooperatively create an
+    onchain transaction that adds to or subtracts from the channel.
+    When adding funds (splicing in), the funds previously in the channel
+    can continue to be used offchain without interruption while the new
+    funds are being confirmed.  When spending funds onchain (splicing
+    out), the remaining funds can also continue to be used offchain
+    without interruption while the onchain recipient sees no difference
+    from a normal transaction.  This allows the wallet UI to make
+    in-channel funds part of the total available balance for spending in
+    onchain transactions so that users don't need to manually manage
+    offchain and onchain balances separately.  Combined with multipath
+    payments that allow funds from multiple channels to be intermixed in
+    payments, this greatly simplifies spending: users will just click a
+    link, review the invoice, and click *Pay*---letting the wallet
+    automatically use any of its available balance for either an onchain
+    payment or an offchain payment using any number of paths.
 
     For more information, see the following threads: [1][zmn splicing
     cut-through], [2][pickhardt bolt splicing], [3][russell splicing].
