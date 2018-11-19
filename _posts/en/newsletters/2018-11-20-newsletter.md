@@ -245,6 +245,20 @@ independent events is the square of the average.
   any last-minute problems before the final release of this maintenance
   update.
 
+## Optech News
+
+- **Second Optech workshop held in Paris:** as announced in [Newsletter #12][],
+  we held our second workshop in Paris last week. There were 24 engineers from
+  Bitcoin companies and open source projects in attendence, and we had great
+  discussions about wallet descriptors, Partially Signed Bitcoin Transactions,
+  Lightning integration, taproot, coin selection, and fee bumping.  Huge thanks
+  to Ledger for hosting and helping with organization.
+
+  If you work at a member company and have any requests or suggestions for
+  future Optech events (be that location, venue, dates, format, topics,
+  or anything else), please contact us. We're here to help our member
+  companies!
+
 ## Notable code changes
 
 *Notable code changes this week in [Bitcoin Core][core commits],
