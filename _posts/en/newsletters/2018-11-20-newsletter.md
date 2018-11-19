@@ -76,7 +76,7 @@ and many gossip improvements."
   routing path including Bob until Alice has sent Bob some money.  This
   creates a bootstrapping problem: if Alice wants to receive payments
   via LN, she has to get people to open new channels to her node---which
-  requires paying possibly-high onchain fees and waiting for onchain
+  requires them paying possibly-high onchain fees and waiting for onchain
   confirmation that can take hours.
 
     A proposed solution to this problem is to allow dual-funded
@@ -295,18 +295,17 @@ commits].*
   the next maintenance release.
 
 - [LND #2124][] adds another essential portion of watchtower support,
-  specifically the ability to detect that an attacker has attempted to
-  steal from one of the watchtower's users by publishing an onchain
-  transaction containing an old channel state.  The watchtower can use
-  the information from the transaction to decrypt a breach remedy
-  transaction previously provided by the victim in order to negate the
-  attack (and penalize the attacker by claiming any funds he
-  could've legitimately taken out of the the channel).  In the current
-  implementation, the watchtower receives a percentage of the recovered
-  funds to compensate it for its diligent monitoring.  This merge is an
-  extension of PRs [#1535][LND #1535] and [#1512][LND #1512] described
-  in [Newsletter #19][] and is a major step towards making LN safer for
-  everyday users.
+  specifically the ability to detect that an attacker has made an
+  onchain attempt steal from one of the watchtower's users.  The
+  watchtower can use the information from the onchain transaction to
+  decrypt a breach remedy transaction previously provided by the victim
+  in order to both negate the attack and penalize the attacker by
+  claiming any funds the attacker legitimately owned in the channel.  In
+  the current implementation, the watchtower receives a percentage of
+  the recovered funds to compensate it for its diligent monitoring.
+  This merge is an extension of PRs [#1535][LND #1535] and [#1512][LND
+  #1512] described in [Newsletter #19][] and is a major step towards
+  making LN safer for everyday users.
 
 ## Special thanks
 
