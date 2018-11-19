@@ -170,6 +170,15 @@ and many gossip improvements."
     documentation wiki.  See also the following mailing list threads:
     [1][cjp rz], [2][zmn rz], [3][zmn rz packetswitch].
 
+Although discussed at the summit, the proposed 1.1 goals don't directly
+address *watchtowers* that help protect channels for users that are
+currently offline, *autopilots* that help users open their initial
+payment channels, or *deterministic preimage generation* that allow
+private keys to stay offline while an online component simply completes
+acceptance of payments.  These are services that can be built on top of
+the protocol and so don't currently require any coordination between
+implementations.
+
 ## News
 
 {% comment %}<!-- math for first sub-bullet:
