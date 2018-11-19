@@ -27,17 +27,13 @@ LN protocol developers [met in Adelaide][rusty wrapup] last weekend to
 determine which changes to adopt for the forthcoming Lightning Protocol
 Specification 1.1.  Thirty proposals were accepted at a
 high-level---meaning full specifications for each proposal are not
-necessarily defined or agreed upon yet---but the basic outline of the
-new features is available.  Below, Optech has attempted to briefly
-describe the highlights from the meeting mentioned in an email linking
-to the [working outline][ln1.1 outline] by Rusty Russell: "multi-path
-payments, dual-funded channels, splicing, wumbo, hidden destinations,
-and many gossip improvements."
+necessarily defined or agreed upon yet---but the [basic outline][ln1.1 outline] of the
+new features is available.  Some highlights from the meeting include:
 
 - **Multi-path payments:** the current normal way to make a payment over
   LN is using a single path.  Alice pays Charlie through her channel to
   Bob and Bob's channel to Charlie.  This works well for small payments
-  where each participant has enough balance or capacity in their channel
+  where each participant has enough capacity
   to support the payment.  But if we use this mechanism when Alice has
   10 open channels each containing a maximum of 10% of her total hot
   wallet balance, Alice can only spend at most 10% of her funds at a
@@ -50,12 +46,14 @@ and many gossip improvements."
     routed through separate paths, they can each commit to the same
     hash Alice would've used to send a single-path payment.  If Charlie
     receives multiple payments within a reasonable time period that
-    equal or exceed the expected amount, he can reveal their shared
-    preimage to claim them simultaneously---providing the same security
-    currently used for single-path payments.  This also works if some
+    equal or exceed the expected amount, he can guarantee that he'll
+    receive all of them by simply revealing the single preimage used by
+    all of the hashes.  This reuses the same proven security mechanism
+    currently used for single-path payments and so doesn't introduce any
+    new security assumptions.  The same mechanism also works if some
     other party along the path with sufficient channel capacity
-    aggregates together the partial payments and forwards a single
-    payment along the remainder of the path.
+    merges together the partial payments and forwards a single
+    payment along the remainder of the path to Charlie.
 
     For more information, see the following Lightning-Dev threads which
     often call this feature Atomic Multi-path Payments (AMP): [an early
@@ -67,17 +65,14 @@ and many gossip improvements."
   is that only one party to the channel needs to initially commit any
   funds to it.  For example, Alice opens a channel to Bob with 0.1 BTC
   of her money and none of Bob's money.  This makes it very easy for
-  users to accept new incoming channels as they don't cost the receiving
-  user anything---not even any opportunity costs (except for operating
-  the LN software) as the initiator even pays channel closing costs.
-  However, this also means that channels can only be
+  users to accept new incoming channels, but it also means that channels can only be
   used in one direction initially---Alice can pay Bob or route payments
   through Bob, but Alice can't receive payments from Bob or from any
   routing path including Bob until Alice has sent Bob some money.  This
   creates a bootstrapping problem: if Alice wants to receive payments
   via LN, she has to get people to open new channels to her node---which
-  requires them paying possibly-high onchain fees and waiting for onchain
-  confirmation that can take hours.
+  requires they pay onchain transaction fees and wait for onchain
+  confirmations that can take hours.
 
     A proposed solution to this problem is to allow dual-funded
     channels.  Alice agrees to put 0.1 BTC into a channel with Bob if
@@ -92,10 +87,10 @@ and many gossip improvements."
     incentive mechanism that can reward capital providers like Bob is
     still being discussed.  For more information, see the following
     threads: [1][neigut liquidity], [2][zmn liquidity], [3][zmn dual
-    rbf].  See also [Newsletter #21][].
+    rbf].  Also see the section on *advertising node liquidity* in [Newsletter #21][].
 
-- **Splicing:** when you currently open an LN channel, you can't
-  increase that channel's maximum balance or send funds onchain to
+- **Splicing:** you can't currently
+  increase a channel's maximum balance or send some of the channel's funds onchain to
   another person without closing the whole channel and opening another between
   the same parties.  Closing one channel and opening another requires
   completely stopping all payments between the two parties until an
@@ -121,11 +116,11 @@ and many gossip improvements."
 
     For more information, see the following threads: [1][zmn splicing
     cut-through], [2][pickhardt bolt splicing], [3][russell splicing].
-    See also [Newsletter #17][].
+    Also see the news item about *channel splicing* in [Newsletter #17][].
 
 - **Wumbo:** by agreement among early LN implementations, currently each
   channel's capacity is limited by default to about 0.168 BTC (about $40
-  USD when defined; currently about $1,000).  This was [chosen][russell
+  USD when defined; currently about $850).  This was [chosen][russell
   why limit] to help prevent users from putting too much money into
   unproven software.
 
@@ -217,7 +212,8 @@ independent events is the square of the average.
       preparing any fee-reduction measures you're willing to use such as
       payment batching.
 
-    - *Increased revenues for profit-maximizing miners:* each time
+    - *Increased revenues for profit-maximizing miners:* miners not only
+      profit from increased fees, but each time
       Bitcoin's difficulty adjusts downwards, mining becomes more
       profitable for Bitcoin miners (all other things being equal).
       Recommendation: do the math on reactivating slightly-old miners
@@ -225,7 +221,7 @@ independent events is the square of the average.
 
     - *Possible sudden end:* it's possible a large set of ideological miners
       producing blocks for Bitcoin Cash will all return to mining for
-      the most profitable chain all at roughly the same time.  Combined
+      the most profitable chain at roughly the same time.  Combined
       with any past difficulty decreases, this could produce a series of
       Bitcoin blocks with shorter average time between blocks than
       normal.  This will likely wipe out any moderate backlog and allow
@@ -238,7 +234,7 @@ independent events is the square of the average.
   10% of the list's traffic in the past 365 days.  Many of the threads
   continue conversations started at the protocol developers summit.  If
   you're interested in Lightning protocol development, we suggest
-  reading each of this month's [threads][ln list].
+  reading each of this month's [threads][ln threads].
 
 - **LND enters release cycle for version 0.5.1:** experienced users of
   the LND implementation may wish to test this pre-release to help find
@@ -249,14 +245,14 @@ independent events is the square of the average.
 
 - **Second Optech workshop held in Paris:** as announced in [Newsletter #12][],
   we held our second workshop in Paris last week. There were 24 engineers from
-  Bitcoin companies and open source projects in attendence, and we had great
-  discussions about wallet descriptors, Partially Signed Bitcoin Transactions,
+  Bitcoin companies and open source projects in attendance, and we had great
+  discussions about wallet descriptors, Partially Signed Bitcoin Transactions (PSBTs),
   Lightning integration, taproot, coin selection, and fee bumping.  Huge thanks
   to Ledger for hosting and helping with organization.
 
   If you work at a member company and have any requests or suggestions for
-  future Optech events (be that location, venue, dates, format, topics,
-  or anything else), please contact us. We're here to help our member
+  future Optech events (such as location, venue, dates, format, topics,
+  or anything else), please [contact us][optech email]. We're here to help our member
   companies!
 
 ## Notable code changes
@@ -301,7 +297,7 @@ commits].*
   `helloworld` plugin written in Python is provided with C-Lightning as
   an example.
 
-- [Bitcoin Core #14411][] The [listtransactions][rpc listtransactions]
+- [Bitcoin Core #14411][] The [listtransactions][rpc listtransactions] RPC
   has its filter parameter partly restored, making it possible to
   retrieve a list of the transactions sent to addresses or scripts with
   a particular label.  This has been backported to the 0.17 branch as
@@ -323,7 +319,7 @@ commits].*
 
 ## Special thanks
 
-We thank Chris Decker, PracticalSwift, and Rene Pickhardt for providing
+We thank Christian Decker, practicalswift, and René Pickhardt for providing
 suggestions or answering questions related to the content of this
 newsletter.  Any remaining errors are entirely the fault of the
 newsletter's author.
@@ -331,7 +327,7 @@ newsletter's author.
 {% include references.md %}
 {% include linkers/issues.md issues="2075,14411,2124,1535,1512,14441" %}
 
-[ln list]: https://lists.linuxfoundation.org/mailman/listinfo/lightning-dev
+[ln threads]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2018-November/thread.html
 [roasbeef amp]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2018-February/000993.html
 [zmn base amp]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2018-November/001577.html
 [pickhardt local amp]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2018-November/001626.html
