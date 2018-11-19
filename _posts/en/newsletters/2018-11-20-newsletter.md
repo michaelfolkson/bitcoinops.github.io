@@ -165,9 +165,10 @@ and many gossip improvements."
     implementations---to stay hidden even when routing payments from
     arbitrary spenders.
 
-    For more information, see the following threads where this feature
-    is also called rendez-vous routing: [1][cjp rz], [2][zmn rz], [3][zmn
-    rz packetswitch].
+    This feature is also called rendez-vous routing.  For more
+    information, see the [description][lnrfc rz] on the LN protocol
+    documentation wiki.  See also the following mailing list threads:
+    [1][cjp rz], [2][zmn rz], [3][zmn rz packetswitch].
 
 ## News
 
@@ -322,3 +323,4 @@ commits].*
 [rusty wrapup]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2018-November/001569.html
 [ln1.1 outline]: https://github.com/lightningnetwork/lightning-rfc/wiki/Lightning-Specification-1.1-Proposal-States
 [input consolidations]: https://en.bitcoin.it/wiki/Techniques_to_reduce_transaction_fees#Consolidation
+[lnrfc rz]: https://github.com/lightningnetwork/lightning-rfc/wiki/Rendez-vous-mechanism-on-top-of-Sphinx
