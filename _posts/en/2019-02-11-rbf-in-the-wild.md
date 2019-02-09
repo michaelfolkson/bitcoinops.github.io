@@ -6,12 +6,15 @@ type: posts
 layout: post
 lang: en
 version: 1
----
 
+excerpt: >
+  A study of usability concerns among wallets and block explorers that
+  support opt-in RBF (BIP125).
+
+---
 Opt-in Replace by Fee (RBF) was standardized in December 2015. But who is
-supporting it and what is the user experience like? This post is a study of
-Bitcoin wallet and block explorer support and usability of opt-in RBF
-([BIP125](https://github.com/bitcoin/bips/blob/master/bip-0125.mediawiki)). The
+supporting it and what is the user experience like? This post presents a study of
+[BIP125][] opt-in RBF as seen by users of popular Bitcoin wallets and block explorers. The
 findings were initially presented during the most recent [Bitcoin Optech
 Workshop in Paris](/workshops/).
 
@@ -62,7 +65,7 @@ capabilities.
 
 That changed when an implementation of Peter Todd’s [BIP125 “Opt-in Full
 Replace-by-Fee
-Signaling”](https://github.com/bitcoin/bips/blob/master/bip-0125.mediawiki) was
+Signaling”][BIP125] was
 merged into Bitcoin Core 0.12.0. BIP125 solves both the spam prevention and
 incentive issues mentioned above by requiring higher transaction fees for
 replacement transactions.
@@ -192,14 +195,14 @@ and also infer that unconfirmed "non RBF" signaled transactions are not
 replaceable.
 
 Any unconfirmed transaction risks being replaced for a variety of reasons
-including broadcasting more than one transaction spending the same UTXO,
-directly mining a different transaction spending the same UTXO, or working with
+including the spender broadcasting more than one transaction spending the same UTXO ([example][todd reddit gold]),
+the spender directly mining a different transaction spending the same UTXO ([Finney attack][]), or the spender working with
 a miner to get a different transaction spending the same UTXO included in a
-block.
+block ([example][betcoin dice]).
 
 ### Explorer blocktrail.com: RBF Visual Label
 
-![blocktrail.com explorer transaction details showing optin rbf label
+![blocktrail.com explorer transaction details showing opt-in rbf label
 screenshot](/img/posts/rbf-in-the-wild/rbf-blocktrain-rbf-label.png)
 
 Blocktrail shows an orange opt-in RBF label and also a mouseover detail for the
@@ -278,7 +281,7 @@ Ledger regarding this issue.
 
 ### Electrum: Advanced Control of RBF Fee Bump
 
-![Electrums dialog of advanced fee bumping options including slider and textbox
+![Electrum's dialog of advanced fee bumping options including slider and textbox
 screenshot](/img/posts/rbf-in-the-wild/rbf-electrum-advanced-rbf-options.png)
 
 Electrum allows more advanced control of the fees in the UI. Additionally the
@@ -396,6 +399,7 @@ reach out to [mike@bitcoinops.org](mailto:mike@bitcoinops.org).
     standard mempool policy rules so fee-bumping can be done more predictably
     by users of second layer protocols.
 
+{% include references.md %}
 [optech team]: https://bitcoinops.org/about/
 [announcement]: https://bitcoinops.org/en/announcing-bitcoin-optech/
 [workshops]: https://bitcoinops.org/workshops/
@@ -406,3 +410,6 @@ reach out to [mike@bitcoinops.org](mailto:mike@bitcoinops.org).
 [scaling book feebumping]: https://github.com/bitcoinops/scaling-book/blob/master/1.fee_bumping/fee_bumping.md
 [softfork]: https://bitcoinops.org/en/newsletters/2018/12/18/#news
 [lightning cpfp carve-out]: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-November/016518.html
+[finney attack]: https://bitcoin.stackexchange.com/questions/4942/what-is-a-finney-attack
+[todd reddit gold]: https://www.coingecko.com/buzz/peter-todd-explains-how-he-double-spent-coinbase
+[betcoin dice]: https://bitcointalk.org/index.php?topic=327767.0
