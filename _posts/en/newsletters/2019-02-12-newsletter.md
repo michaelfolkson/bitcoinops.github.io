@@ -7,8 +7,7 @@ layout: newsletter
 lang: en
 ---
 This week's newsletter announces the newest version of LND, briefly
-describes a tool for generating bitcoin ownership proofs, summarizes the
-disclosure of an RPC vulnerability in Bitcoin Core, and links to an
+describes a tool for generating bitcoin ownership proofs, and links to an
 Optech study about the usability of Replace-by-Fee.  Also included are
 summaries of notable code changes to popular Bitcoin infrastructure
 projects.
@@ -30,35 +29,9 @@ projects.
   contain---proving that the transaction creator had access to all of
   the information necessary to create a spend (e.g. the private keys).
   The tool is written in the Rust programming language and uses the
-  increasingly-popular BIP174 Partially-Signed Bitcoin Transaction
+  increasingly popular BIP174 Partially Signed Bitcoin Transaction
   (PSBT) format for interoperability with Bitcoin Core and other Bitcoin
   tools.  Future plans for the tool include privacy enhancements.
-
-- **Bitcoin Core RPC vulnerability disclosed:** on his personal blog,
-  Bitcoin developer Luke Dashjr [disclosed][dashjr cve blog]
-  CVE-2018-20587, originally reported by researchers from Aalto
-  University and the University of Helsinki.  When Bitcoin Core is
-  started with its RPC enabled (e.g. using `bitcoind`), it attempts to
-  listen by default on both the IPv4 and IPv6 loopback (localhost)
-  interfaces.  Because many systems only have one of these configured,
-  Bitcoin Core doesn't abort if only one of them is available.  However,
-  this allows a malicious program that starts before Bitcoin Core to
-  attach to one of the interfaces, wait for Bitcoin Core's startup
-  procedure to attach to the other interface, and then relay all
-  information from the compromised interface to the uncompromised
-  interface while intercepting sensitive information such as
-  authentication credentials and wallet passphrases.
-
-    This attack is only possible if you are using a system that is
-    actively running malicious software.  In many such cases, Bitcoin
-    Core is already vulnerable---the malicious software could achieve
-    the same results if it has access to change your Bitcoin Core
-    configuration file or if it's a keylogger, a network traffic
-    analyzer, or it can imitate Bitcoin Core (or the terminal or other
-    tool you use to access Bitcoin Core via RPC).  To make it clear that
-    Bitcoin Core is expected to only be used on secure machines, its
-    [documentation][rpc safety doc] has be updated to describe various
-    safety precautions you should take before using the RPC interface.
 
 - **RBF usability study published:** with only about 6% of the
   transactions confirmed in 2018 signaling support for [BIP125][] opt-in
@@ -66,13 +39,11 @@ projects.
   examination][rbf report] of almost two dozen popular Bitcoin wallets,
   block explorers, and other services to see how they handled either
   sending or receiving RBF transactions (including fee bumps).  His
-  report provides visual examples of how many systems fail to handle RBF
-  correctly.  This is done not to criticize the pioneering developers of
+  report provides visual examples, both good and bad, of how many systems handle RBF
+  transactions.  The examples of problems are not made to criticize the pioneering developers of
   those systems, but to help all Bitcoin developers learn how to master
-  the powerful fee-management capability that RBF provides.  The report
-  also highlights several RBF-related usability enhancements some
-  software have adopted and that other programs may want to consider
-  using for themselves.  Based on the examples collected, the report
+  the powerful fee-management capability that RBF provides.
+  Based on the examples collected, the report
   concludes with a summary of recommendations for developers.
 
 ## Notable code changes
@@ -112,7 +83,7 @@ projects.
     from has not sent it to you within a minute, you'll request it from
     another randomly-selected peer.  If that also doesn't work, you'll
     continue to randomly select peers to request the transaction from.
-    This doesn't completely eliminate the problem, but it does mean that
+    This doesn't eliminate the problem, but it does mean that
     an attacker who wants to delay a transaction probably needs to
     operate a much larger number of nodes to achieve the same delay.
     It's possible that a set reconciliation technique based on something
@@ -158,7 +129,5 @@ projects.
 [coinscope]: https://www.cs.umd.edu/projects/coinscope/coinscope.pdf
 [txprobe]: https://arxiv.org/pdf/1812.00942.pdf
 [reserve audit tool]: https://blockstream.com/2019/02/04/standardizing-bitcoin-proof-of-reserves/
-[dashjr cve blog]: https://medium.com/@lukedashjr/cve-2018-20587-advisory-and-full-disclosure-a3105551e78b
-[rpc safety doc]: https://github.com/bitcoin/bitcoin/blob/master/doc/JSON-RPC-interface.md#security
 [eclair tor]: https://github.com/ACINQ/eclair/blob/master/TOR.md
 [rbf report]: /en/rbf-in-the-wild/
