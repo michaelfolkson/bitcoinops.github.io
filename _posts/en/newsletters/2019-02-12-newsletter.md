@@ -20,19 +20,6 @@ projects.
 
 ## News
 
-- **Tool released for generating and verifying bitcoin ownership
-  proofs:** Blockstream has [released][reserve audit tool] a tool that
-  helps bitcoin custodians, such as exchanges, prove that they control a
-  certain number of bitcoins without creating an onchain transaction.
-  The tool works by creating an almost-valid transaction that contains
-  all of the same information a valid transaction would
-  contain---proving that the transaction creator had access to all of
-  the information necessary to create a spend (e.g. the private keys).
-  The tool is written in the Rust programming language and uses the
-  increasingly popular BIP174 Partially Signed Bitcoin Transaction
-  (PSBT) format for interoperability with Bitcoin Core and other Bitcoin
-  tools.  Future plans for the tool include privacy enhancements.
-
 - **RBF usability study published:** with only about 6% of the
   transactions confirmed in 2018 signaling support for [BIP125][] opt-in
   Replace-by-Fee (RBF), Optech contributor Mike Schmidt undertook [an
@@ -45,6 +32,19 @@ projects.
   the powerful fee-management capability that RBF provides.
   Based on the examples collected, the report
   concludes with a summary of recommendations for developers.
+
+- **Tool released for generating and verifying bitcoin ownership
+  proofs:** Blockstream has [released][reserve audit tool] a tool that
+  helps bitcoin custodians, such as exchanges, prove that they control a
+  certain number of bitcoins without creating an onchain transaction.
+  The tool works by creating an almost-valid transaction that contains
+  all of the same information a valid transaction would
+  contain---proving that the transaction creator had access to all of
+  the information necessary to create a spend (e.g. the private keys).
+  The tool is written in the Rust programming language and uses the
+  increasingly popular BIP174 Partially Signed Bitcoin Transaction
+  (PSBT) format for interoperability with Bitcoin Core and other Bitcoin
+  tools.  Future plans for the tool include privacy enhancements.
 
 ## Notable code changes
 
