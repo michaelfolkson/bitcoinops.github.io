@@ -1,7 +1,5 @@
 ![{{tool.name|escape_once}}]({{tool.logo}}){:.third-party-logo}{:title="{{tool.name}}"}
 
-{{tool.description}}
-
 ## Replace-by-Fee (RBF)
 
 An unconfirmed transaction can be replaced by another version of the
