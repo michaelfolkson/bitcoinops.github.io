@@ -152,3 +152,36 @@ div.xoverflow {
   border-bottom: 2px solid lightgray;
   color: gray;
 }
+
+.third-party-logo
+{
+  max-height:150px;
+  max-width:150px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding:20px
+}
+
+:target {
+  background-color: #daf8fa;
+}
+
+td.compat_yes {
+  background-color: palegreen;
+}
+
+td.compat_no {
+  background-color: pink;
+}
+
+td.compat {
+  margin: 0;
+  padding: 0;
+  font-size: 125%;
+}
+
+span.compat-caption {
+  font-size: 75%;
+  font-style: italic;
+}
