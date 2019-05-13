@@ -365,7 +365,7 @@ changed, most notably:
   previously-valid things invalid, this maximal validity
   today will allow maximal flexibility in future soft forks.  Of course,
   receivers get to choose what scripts they receive payments to, so no
-  one who likes their money will include an `OP_SUCCESSn` opcode in
+  one who likes their money will include an `OP_SUCCESS` opcode in
   their scripts until a soft fork has given it a new consensus-enforced
   meaning.
 
@@ -380,7 +380,7 @@ changed, most notably:
   counter if a signature matches a specified public key (e.g. for
   2-of-3, you need two `OP_CHECKSIGADD` calls to succeed).  This change
   is made to allow for batch verification of multiple signatures, which
-  [bip-schnorr][] estimates can speed up verification by FIXMEx over
+  [bip-schnorr][] estimates can significantly speed up verification compared to
   checking each signature independently.
 
     Ideally, many multisig operations can use signature aggregation as
