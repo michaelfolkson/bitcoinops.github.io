@@ -346,39 +346,69 @@ that pay these three conditions.
 When it comes time to spend this money, either Alice or Bob can provide
 the script they want to use, the data needed by it (a signature and,
 sometimes, a hash preimage), the Taproot internal key, and the hash of
-the script they didn't use.  Alternatively, Alice and Bob work together
+the script they didn't use.  Alternatively, Alice and Bob can work together
 to use signature aggregation (after accounting for the tweak) to provide
 a signature in combination with the same single-key, single-signature
 spending pattern described in the previous subsections.  As long as the
 data they provide in either case is correct, the spend will be accepted.
 
-    FIXME: table example of HTLC cost in current P2WSH and taproot for
-    each of the three possible outcomes
-
+{% comment %}<!--
     P2WSH
-      Output: 8+1+34
-      1.preimage, digest, A pubkey, B pubkey, OP_IF/ENDIF, Alice sig
-      2. digest, A pubkey, B pubkey, IF/ENDIF, Bob sig
+      scriptPubKey: 34
+      witnessScript: OP_IF OP_HASH256 OP_EQUALVERIFY <A pubkey> OP_CHECKSIG
+                     OP_ELSE <delta> OP_CSV OP_DROP <B pubkey> OP_CHECKSIG OP_ENDIF
+                     9 non-push, 4 push, 2x33 (pubkeys), 1x4 (delta) = 83
+
+      1. witnessScript, IF bit, preimage, Alice sig
+          1+83            1+1      1+32       1+72    = 192/4 => 48
+
+      2. witnessScript, Bob sig
+          1+83             1+72    = 157/4  => 39.25
+
       3. N/A (use one of the above)
 
     Taproot
-      Output: 8+1+35
-      1. preimage, digest, A pubkey, A sig; internal key; leaf hash
-      2. B pubkey, B sig; internal key; leaf hash
+      scriptPubKey: 35
+      1. OP_HASH256 <hash> OP_EQUALVERIFY <Alice pubkey> OP_CHECKSIG
+            1        1+32        1             1+33          1        = 69
+
+         script, preimage, A sig; internal key; leaf hash
+          1+69      1+32    1+64     1+33           32       = 234/4 => 58.5
+
+      2. <time delta> OP_CHECKSEQUENCEVERIFY OP_DROP <Bob pubkey> OP_CHECKSIG
+              1+4             1                 1        1+33         1 = 41
+
+         script, B sig; internal key; leaf hash
+           1+41   1+64      1+33         1+32       = 174/4 => 43.5
+
       3. AB sig
 
-Because we chose to use a small tree in the above example, we will
-describe some things that would've been clearer with a larger example.
-First, if you have any unpaired nodes in your tree, your software will
-be responsible for pairing them with something, e.g a 32-byte random
-number.  Additionally, the maximum depth of a tree is 32 rows, allowing
-a tree to contain a maximum of around four billion scripts.  However,
-only one of those scripts would appear in any spending transaction and
-only 32 hashes directly related to the merkle tree would need to be
-generated to prove the script was part of the tree---this means that more
-complex scripts than our simple HTLC can gain much larger efficiency
-improvements than seen above (see an article focused on [MAST][] for
-more information).
+          1+64 = 65/4 => 16.25
+-->{% endcomment %}
+
+| | scriptPubKey vbytes | witness vbytes | Total vbytes |
+|-|-|-|-|
+| P2WSH (1) Alice spends   | 34  | 48.00 | 82.00 |
+| P2WSH (2) Bob spends     | 34  | 39.25 | 73.25 |
+| P2WSH (3) Mutual spend   | N/A | N/A   | N/A   |
+| Taproot (1) Alice spends | 35  | 58.50 | 93.50 |
+| Taproot (2) Bob spends   | 35  | 43.50 | 78.50 |
+| Taproot (3) Mutual spend | 35  | 16.25 | 51.25 |
+
+Because we chose to use a small tree and a simple example script, the
+cost of using Taproot script-path spending exceeds the cost of the data
+than can be omitted from the unspent branch, leading to slightly higher
+costs for Taproot in cases 1 and 2.  However, the mutual spend case is
+significantly less expensive than any of the other options (and using it
+would completely hide that this was an HTLC).
+
+The maximum depth of a tree is 32 rows, allowing a tree to contain a
+maximum of around four billion scripts.  However, only one of those
+scripts would appear in any spending transaction and only 32 hashes
+directly related to the merkle tree would need to be generated to prove
+the script was part of the tree---this means that more complex scripts
+than our simple HTLC can gain much larger efficiency improvements than
+seen above (see an article focused on [MAST][] for more information).
 
 ### Slight changes to scripting with Tapscript
 
