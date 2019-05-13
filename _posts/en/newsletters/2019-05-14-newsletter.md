@@ -6,19 +6,46 @@ type: newsletter
 layout: newsletter
 lang: en
 ---
-This week's newsletter FIXME
+This week's newsletter includes a special section about the recent
+Taproot proposal, news about a small potential change to the BIP174 PSBT
+format, and our regular sections about bech32 sending support and
+notable changes in popular infrastructure projects.
 
 ## Action items
 
-FIXME
+*None this week.*
 
 ## Dashboard items
 
-FIXME: highish feerates
+- **Higher feerates:** at the time of writing, estimated feerates for
+  confirmation in the next 2 blocks are ten times higher than estimates
+  for confirmation within 30 blocks (six hours) and a hundred times
+  higher than estimates for waiting 144 blocks (1 day) or more.  This
+  may mean there's still an opportunity to cheaply consolidate a modest
+  number of inputs in case feerates rise even further, but only if you
+  can tolerate a potentially long wait for the consolidation transaction
+  to confirm.
 
 ## News
 
-FIXME
+- **Soft fork discussion:** several replies were posted to the
+  Bitcoin-Dev mailing list in response to [bip-taproot][] and
+  [bip-tapscript][].  Additionally, Anthony Towns [posted][] a proposal
+  for an additional soft fork change that uses bip-taproot features to
+  enable functionality similar in purpose to [BIP118][] SIGHASH_NOINPUT.
+  As this week's newsletter already includes a special section about
+  Taproot, we're deferring summaries of the feedback and extension to
+  next week's newsletter so readers can have some time to digest the
+  essentials of Taproot first.
+
+- **Addition of derivation paths to BIP174 PSBTs:** Stepan Snigirev
+  [posted][psbt path] a suggestion to the Bitcoin-Dev mailing list to
+  allow PSBTs to include the BIP32 derivation path for the public keys
+  used to generate the change output's address.  This can help multisig
+  wallets determine whether or not the transaction's change output pays
+  back to the correct set of signers.  The author of [BIP174][], Andrew
+  Chow, was receptive to the idea, as was the developer for a hardware
+  wallet.
 
 ## Overview of the Taproot & Tapscript proposed BIPs
 
@@ -460,7 +487,36 @@ access all of segwit's multiple benefits.*
 {% comment %}<!-- weekly reminder for harding: check Bech32 Adoption
 wiki page for changes -->{% endcomment %}
 
-FIXME
+[BIP173][] forbids bech32 addresses from using mixed cases.  The
+preferred way to write a bech32 address is in all lowercase, but there's
+one case where all uppercase makes sense: QR codes.  Take a look at the
+following two QR codes for the same address with the only difference
+being lowercase versus uppercase:
+
+    FIXME: image
+
+This was a deliberate design feature of bech32.  QR codes can be created
+in several modes (most notably: numeric, uppercase alphanumeric, and
+binary), each one using more bits to represent each character.  Legacy
+addresses require mixed case, so their only option is to use the binary
+mode.  Bech32 addresses for Bitcoin[^only-bc] can use the more efficient
+uppercase alphanumeric character set when the address is capitalized,
+allowing the QR code to be less complex.
+
+Simple [BIP21][] URIs can also use all uppercase characters with bech32
+because [RFC3986][] specifies the URI scheme name is case insensitive.
+
+    FIXME: image
+
+Unfortunately, the `?` and `&` needed for passing parameters in a BIP21
+URI are not part of the QR code uppercase character set, so our QR
+encoder automatically switches back to binary mode when they are used.
+
+    FIXME: image
+
+Still, anywhere you want to display just an address in a QR code, it
+makes sense to use all-uppercase for bech32 addresses and [bech32-like
+addresses][News 44 bech32].
 
 ## Notable code and documentation changes
 
@@ -469,7 +525,32 @@ FIXME
 [libsecp256k1][libsecp256k1 repo], and [Bitcoin Improvement Proposals
 (BIPs)][bips repo].*
 
-FIXME
+- [Bitcoin Core #15730][] extends the `getwalletinfo` RPC with a
+  `scanning` field that tells the user how far along the program
+  is in rescanning the block chain for transactions affecting their
+  wallet (if the user requested a rescan or it was automatically
+  triggered).  Otherwise, it simply returns `false`.
+
+- [Bitcoin Core #15930][] deprecates the `getunconfirmedbalance` RPC and
+  the three different *balance* fields in the `getwalletinfo` RPC.  In
+  their place, a `getbalances` RPC is added that provides provides two
+  sets of fields.  For balances the wallet can spend ("IsMine"), a
+  `trusted` field for outputs either created by the wallet itself or
+  which have at least one confirmation; an `untrusted_pending` field for
+  outputs in the mempool created by other users; and an `immature` field
+  for outputs from a miner generation transaction that haven't yet
+  received 100 confirmations (the earliest they can be spent).  For
+  balances the wallet is only watching ("watchonly"), the same three
+  fields are provided under a different object.
+
+- [C-Lightning #2524][] records details about failed attempts to forward
+  payments to the database and will display details in the
+  `listforwards` RPC.
+
+- [Bitcoin Core #15939][] removes the build target for 32-bit Windows,
+  meaning there will be no Win32 binaries for future versions of Bitcoin
+  Core.  Evidence suggests that very few (if any) Bitcoin Core users are
+  using 32-bit Windows.
 
 ## Footnotes
 
@@ -479,7 +560,25 @@ FIXME
     weighting.  We use them in this document as a floating-point unit
     for additional precision.
 
+[^only-bc]:
+    Bech32 addresses have three parts, a Human Readable Prefix (HRP)
+    such as `bc`, a separator (always a `1`), and a data part.  The
+    separator and the data part are guaranteed to be part of QR code's
+    *uppercase alphanumeric* set, but the range of characters allowed in
+    the HRP according to BIP173 includes punctuation that isn't part of
+    that uppercase alphanumeric set.  Specifically, the following
+    characters are allowed in bech32 HRPs but are not part of the QR
+    code uppercase alphanumeric set:
+
+        !"#&'()';<=>?@[\]^_`{|}~
+
+    None of the bech32 HRPs used in Bitcoin (bc, tb, bcrt) use any of
+    these characters, and neither does any other application as far as
+    we know.  However, you may not want to make any assumptions in your
+    code about uppercase always providing smaller QR codes for
+    non-Bitcoin bech32 addresses.
+
 {% include references.md %}
 {% include linkers/issues.md issues="15487,15764,15323,15141,1888" %}
 [bech32 easy]: {{news38}}#bech32-sending-support
-
+[rfc3986]: https://tools.ietf.org/html/rfc3986#section-3.1
