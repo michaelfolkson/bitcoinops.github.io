@@ -280,7 +280,7 @@ the same no matter how many signers are involved.  This can be compared
 to P2WSH multisig where each additional pubkey adds 8.50 vbytes and each
 additional signature adds about 18.25 vbytes.
 
-    FIXME: plot similar to Newsletter #42
+![Size of taproot multisig compared to P2WSH](/img/posts/2019-05-taproot-multisig-size.png)
 
 ## Complex spending with Taproot
 
@@ -324,7 +324,7 @@ potentially improving privacy.  After ordering, the two hashes will be
 hashed together with the prefix tag "TapBranch".  As this merkle tree
 only has two leaves, the resultant hash is the merkle root.
 
-    FIXME: diagram of tree
+![Example taproot merkle tree](/img/posts/2019-05-taproot-tree.png)
 
 This merkle tree only covers two of the HTLC's possible end states.  For
 the third case where Alice and Bob mutually agree on a spend, they can
@@ -339,7 +339,8 @@ tweak pubkey is added to the internal key in order to derive the *taproot output
 key---*the key that is used in any bech32 addresses and scriptPubKeys
 that pay these three conditions.
 
-    FIXME: diagram of tweaking, similar to one from BitMex article
+![Construction of taproot tweak and output key](/img/posts/2019-05-taproot-tweak.png)
+{:.center}
 
 When it comes time to spend this money, either Alice or Bob can provide
 the script they want to use, the data needed by it (a signature and,
@@ -436,7 +437,7 @@ changed, most notably:
   existing single-sig `OP_CHECKSIG` and `OP_CHECKSIGVERIFY` may be used
   in series.  For example (2-of-2 multisig):
 
-        <Alice pubkey> OP_CHECKSIGVERIFY <Bob pubkey> OP_CHECKSIG
+        <A pubkey> OP_CHECKSIGVERIFY <B pubkey> OP_CHECKSIG
 
     Second, a new `OP_CHECKSIGADD` (`OP_CSADD`) opcode may be used to
     increment a counter if a signature matches a specified public key.

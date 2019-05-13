@@ -3,6 +3,7 @@
 set style line 1 lc rgb '#8b1a0e' pt 4 ps 0.25 lt 1 lw 2
 set style line 2 lc rgb '#5e9c36' pt 4 ps 0.25 lt 1 lw 2
 set style line 3 lc rgb '#0025ad' pt 4 ps 0.25 lt 1 lw 2
+set style line 4 lc rgb '#7e2f8e' pt 4 ps 0.25 lt 1 lw 2
 
 set terminal pngcairo size 800,200 font "Sans,12"
 
@@ -26,3 +27,7 @@ plot "<python3 2019-04-segwit-savings.py" u 0:2 title "P2SH" ls 1 \
 set output './2019-04-segwit-multisig-size-p2sh-p2wsh-to-p2wsh.png'
 plot "<python3 2019-04-segwit-savings.py" u 0:3 title "P2SH-P2WSH" ls 2 \
    , "<python3 2019-04-segwit-savings.py" u 0:4 title "P2WSH" ls 3
+
+set output './2019-05-taproot-multisig-size.png'
+plot "<python3 2019-04-segwit-savings.py" u 0:4 title "P2WSH" ls 3 \
+   , "<python3 2019-04-segwit-savings.py" u 0:5 title "Taproot" ls 4
