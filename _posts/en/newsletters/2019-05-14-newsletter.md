@@ -134,9 +134,10 @@ address will contain the pubkey directly, with one small change.
 Currently, 33-byte Bitcoin-style pubkeys are encoded to start with either
 a 0x02 or 0x03 to allow validators to reconstruct the key's Y-coordinate
 on the secp256k1 elliptic curve; in bip-taproot, the value of this byte
-is reduced by two so that 0x02 becomes 0x00 and 0x03 becomes 0x01.  This
-allows them to use the first two values available while keeping the
-meaning the same.  Also the witness version is changed from the `0` used
+is reduced by two so that 0x02 becomes 0x00 and 0x03 becomes 0x01.  The
+meaning stays the same but using the low bit for the values frees up the
+remaining bits for future soft forks.
+Also the witness version is changed from the `0` used
 for P2WPKH/P2WSH to a `1`.
 
 | Object           | Operation                               | Example result    |
@@ -395,8 +396,8 @@ data they provide in either case is correct, the spend will be accepted.
 | Taproot (3) Mutual spend | 35  | 16.25 | 51.25 |
 
 Because we chose to use a small tree and a simple example script, the
-cost of using Taproot script-path spending exceeds the cost of the data
-than can be omitted from the unspent branch, leading to slightly higher
+cost of using Taproot script-path spending is similar to the cost of the data
+that can be omitted from the unspent branch, leading to slightly higher
 costs for Taproot in the case where Alice spends.  However, the case
 where Bob spends is slightly cheaper and the case of the mutual spend is
 significantly less expensive than any of the other options (and using it
@@ -437,13 +438,13 @@ changed, most notably:
   existing single-sig `OP_CHECKSIG` and `OP_CHECKSIGVERIFY` may be used
   in series.  For example (2-of-2 multisig):
 
-        <A pubkey> OP_CHECKSIGVERIFY <B pubkey> OP_CHECKSIG
+      <A pubkey> OP_CHECKSIGVERIFY <B pubkey> OP_CHECKSIG
 
     Second, a new `OP_CHECKSIGADD` (`OP_CSADD`) opcode may be used to
     increment a counter if a signature matches a specified public key.
     For example (2-of-3):
 
-        <A pubkey> OP_CHECKSIG <B pubkey> OP_CSADD <C pubkey> OP_CSADD OP_2 OP_EQUAL
+      <A pubkey> OP_CHECKSIG <B pubkey> OP_CSADD <C pubkey> OP_CSADD OP_2 OP_EQUAL
 
     This change is made to allow for batch verification of multiple
     signatures, which can [significantly speed up
@@ -464,7 +465,7 @@ changed, most notably:
     Taproot resolves this down to one parameter by requiring valid
     transactions using Taproot spends include a certain amount of data
     for each sigop that succeeds.  The rule is one free sigop and then
-    50 bytes of data for each additional sigop.  Since Schnorr
+    the witness must contain 50 bytes of data for each additional sigop.  Since Schnorr
     signatures are at least 64 bytes, this should provide more than
     enough space to cover all expected uses, and it means that miners
     can simply include the most profitable valid Taproot transactions in
@@ -475,7 +476,7 @@ changed, most notably:
 Together, these proposals bring Bitcoin two features that developers
 have been wanting for years.  The first of these features, Schnorr
 signatures, will make available increased privacy and reduced fees for
-the increasing number of Bitcoin users taking advantage of multisig
+the growing number of Bitcoin users taking advantage of multisig
 security (including LN users), and research into advanced uses of
 Schnorr such as [scriptless scripts][] and [discrete log contracts][]
 may enable many significant improvements in efficiency, privacy, and
@@ -533,12 +534,12 @@ being lowercase versus uppercase:
 
 This is a deliberate design feature of bech32.  QR codes can be created
 in several modes that support different character sets.
-Legacy addresses require mixed case, so they use the binary
-mode.  However, Bech32 addresses for Bitcoin[^only-bc] can be represented
-using only numbers and capital letters, so they can use the smaller
-uppercase alphanumeric character set.  Because this set is smaller, it
-uses fewer bits to encode each character in a QR code, allowing the
-resultant code to be less complex.
+The binary mode character set is used for legacy addresses because they
+require mixed case.  However, Bech32 addresses for Bitcoin[^only-bc] can
+be represented using only numbers and capital letters, so they can use
+the smaller uppercase alphanumeric character set.  Because this set is
+smaller, it uses fewer bits to encode each character in a QR code,
+allowing the resultant code to be less complex.
 
 Bitcoin addresses are often used in [BIP21][] URIs.  BIP21 technically
 requires base58check formatting, but at least some wallets that support
@@ -556,10 +557,10 @@ Unfortunately, the `?` and `&` needed for passing additional parameters
 in a BIP21 URI are not part of the QR code uppercase character set, so
 only binary mode can be used.  Additionally, BIP21 specifies that query
 parameter names such as `amount` and `label` are case sensitive, so
-all-uppercase versions of them aren't expected to work anyway.
+uppercase versions of them aren't expected to work anyway.
 
-Still, anywhere you want to display just an address in a QR code, it
-makes sense to use all-uppercase for bech32 addresses and [bech32-like
+Still, anywhere you want to display just an address in a QR code, you
+should consider using all-uppercase for bech32 addresses and [bech32-like
 addresses][News 44 bech32].
 
 ## Notable code and documentation changes
@@ -588,7 +589,7 @@ addresses][News 44 bech32].
   fields are provided under a different object.
 
 - [C-Lightning #2524][] records details about failed attempts to forward
-  payments to the database and will display details in the
+  payments so that it can later display those details in the
   `listforwards` RPC.
 
 - [Bitcoin Core #15939][] removes the build target for 32-bit Windows,
