@@ -69,6 +69,11 @@ build on Bitcoin.  We'll leave the description of those advances for
 another time and focus here on how the two proposed BIPs can make
 existing uses of Bitcoin work even better than they do today.
 
+Please note, all Taproot features will be opt-in for wallets, so no
+existing wallet will need to change how it works.  Only wallets that
+want to take advantage of the benefits of Taproot and Tapscript will
+need to upgrade.
+
 ### What's not in the proposals
 
 Before we look at what features the proposals may add to Bitcoin, let's
@@ -94,8 +99,9 @@ take a moment to look at some things that aren't part of the proposals:
   with new sighash types or other changes.
 
 - **No activation mechanism specified:** if users decide they want to
-  begin enforcing the soft fork's new rules, safety requires that all
-  users begin enforcing the new rules at the same block.  Various
+  begin enforcing the soft fork's new rules, safety requires that enough
+  of them begin enforcing the new rules at the same block so that miners
+  are deterred from creating blocks that violate the new rules.  Various
   mechanisms have been used to accomplish this in the past and other
   options have been described for potential future use.  However,
   bip-taproot doesn't mention any of these techniques.  Optech agrees
@@ -103,13 +109,6 @@ take a moment to look at some things that aren't part of the proposals:
   premature][discuss activation].  We first need to ensure that there's
   widespread agreement that the proposals are safe and desirable before
   we start a debate about the best way to activate them.
-
-- **No changes to existing operations for wallets:** all Taproot
-  features will be opt-in, so no existing wallet will need to change how
-  it works.  Only wallets that want to take advantage of the benefits of
-  Taproot and Tapscript will need to upgrade.  For miners, it will
-  either be recommended or required that they upgrade their nodes
-  (this will depend on what activation mechanism is eventually chosen).
 
 ### Single-sig spending using Taproot
 
@@ -135,9 +134,10 @@ address will contain the pubkey directly, with one small change.
 Currently, 33-byte Bitcoin-style pubkeys are encoded to start with either
 a 0x02 or 0x03 to allow validators to reconstruct the key's Y-coordinate
 on the secp256k1 elliptic curve; in bip-taproot, the value of this byte
-is reduced by two so that 0x02 becomes 0x00 and 0x03 becomes 0x01,
-although the meaning is exactly the same.  Also the witness version is
-changed from the `0` used for P2WPKH/P2WSH to a `1`.
+is reduced by two so that 0x02 becomes 0x00 and 0x03 becomes 0x01.  This
+allows them to use the first two values available while keeping the
+meaning the same.  Also the witness version is changed from the `0` used
+for P2WPKH/P2WSH to a `1`.
 
 | Object           | Operation                               | Example result    |
 |-|-|-|
@@ -164,9 +164,10 @@ appended.  If the default sighash is used, the signature is 64 bytes (16
 vbytes); if a non-default is used, it is 65 bytes (16.25
 vbytes[^vbytes-decimal]).  Overall, this makes the cost to create and
 spend a Taproot single-sig output about 5% more expensive than P2WPKH.
-However, the costs are distributed differently---it costs more to create
-a Taproot output than a P2WPKH output and less to spend it, which may
-help contribute towards keeping the size of the UTXO set manageable.
+This is probably not significant: the cost to create a Taproot output is
+almost the same as to create a P2WSH output---which people pay all the
+time without issue---and the cost to spend a single-key Taproot is 40%
+cheaper than P2WPKH.
 
 <table style="text-align: center;">
 <tr>
@@ -245,7 +246,7 @@ These are outputs that depend on a certain number of signatures from
 particular pubkeys but don't have any other conditions.  These are used
 both by individual users (e.g. requiring multiple devices to work
 together in a spend) and by multiple parties to a single transaction
-(e.g. escrows and LN).
+(e.g. escrows and LN funding transactions).
 
 There are two ways to perform simple multisig spending using Taproot,
 the most efficient of which is key and signature aggregation as
@@ -276,10 +277,8 @@ aggregation protocol in the context of Bitcoin.
 
 The number of bytes used for aggregated keys and signatures is exactly
 the same no matter how many signers are involved.  This can be compared
-to P2WSH multisig where each additional pubkey adds 8.50 vbytes, each
-additional signature adds about 18.25 vbytes, and there is at least 0.75
-vbytes of additional overhead from the opcode and extra parameters used
-to invoke multisig checking.
+to P2WSH multisig where each additional pubkey adds 8.50 vbytes and each
+additional signature adds about 18.25 vbytes.
 
     FIXME: plot similar to Newsletter #42
 
@@ -307,7 +306,7 @@ independent scripts, each of which handles one of the first two items
 above:
 
     (1) OP_HASH256 <hash> OP_EQUALVERIFY <Alice pubkey> OP_CHECKSIG
-    (2) <time delta> OP_CHECKSEQUENCEVERIFY OP_DROP <Bob pubkey> OP_CHECKSIG
+    (2) <time> OP_CHECKLOCKTIMEVERIFY OP_DROP <Bob pubkey> OP_CHECKSIG
 
 These separate scripts are then hashed so that they can be used as the
 leaves of a merkle tree.  As described earlier, the data to be hashed is
@@ -336,8 +335,7 @@ called the *Taproot internal key.*
 The merkle root and the internal key are then hashed together (prefix
 tag, "TapTweak") and the resultant digest is used as a private key from
 which a pubkey is derived, this value being known as the *tweak.*  The
-tweak pubkey is added to the internal key (the same operation used in
-[BIP32][] HD key derivation) in order to derive the *taproot output
+tweak pubkey is added to the internal key in order to derive the *taproot output
 key---*the key that is used in any bech32 addresses and scriptPubKeys
 that pay these three conditions.
 
@@ -345,7 +343,7 @@ that pay these three conditions.
 
 When it comes time to spend this money, either Alice or Bob can provide
 the script they want to use, the data needed by it (a signature and,
-sometimes, a hash preimage), the Taproot internal key, and the hash of
+in Alice's case, a hash preimage), the Taproot internal key, and the hash of
 the script they didn't use.  Alternatively, Alice and Bob can work together
 to use signature aggregation (after accounting for the tweak) to provide
 a signature in combination with the same single-key, single-signature
@@ -355,15 +353,15 @@ data they provide in either case is correct, the spend will be accepted.
 {% comment %}<!--
     P2WSH
       scriptPubKey: 34
-      witnessScript: OP_IF OP_HASH256 OP_EQUALVERIFY <A pubkey> OP_CHECKSIG
-                     OP_ELSE <delta> OP_CSV OP_DROP <B pubkey> OP_CHECKSIG OP_ENDIF
-                     9 non-push, 4 push, 2x33 (pubkeys), 1x4 (delta) = 83
+      witnessScript: OP_IF OP_HASH256 <hash> OP_EQUALVERIFY <A pubkey>
+                     OP_ELSE <time> OP_CLTV OP_DROP <B pubkey> OP_ENDIF OP_CHECKSIG
+                     8 non-push, 4 push, 2x33 (pubkeys), 1x32 (hash), 1x4 (delta) = 114
 
-      1. witnessScript, IF bit, preimage, Alice sig
-          1+83            1+1      1+32       1+72    = 192/4 => 48
+      1. witnessScript, OP_1, preimage, Alice sig
+          1+114           1      1+32       1+72    = 221/4 => 55.25
 
-      2. witnessScript, Bob sig
-          1+83             1+72    = 157/4  => 39.25
+      2. witnessScript, OP_0, Bob sig
+          1+114           1     1+72    = 189/4  => 47.25
 
       3. N/A (use one of the above)
 
@@ -375,7 +373,7 @@ data they provide in either case is correct, the spend will be accepted.
          script, preimage, A sig; internal key; leaf hash
           1+69      1+32    1+64     1+33           32       = 234/4 => 58.5
 
-      2. <time delta> OP_CHECKSEQUENCEVERIFY OP_DROP <Bob pubkey> OP_CHECKSIG
+      2. <time>     OP_CHECKLOCKTIMEVERIFY OP_DROP <Bob pubkey> OP_CHECKSIG
               1+4             1                 1        1+33         1 = 41
 
          script, B sig; internal key; leaf hash
@@ -388,8 +386,8 @@ data they provide in either case is correct, the spend will be accepted.
 
 | | scriptPubKey vbytes | witness vbytes | Total vbytes |
 |-|-|-|-|
-| P2WSH (1) Alice spends   | 34  | 48.00 | 82.00 |
-| P2WSH (2) Bob spends     | 34  | 39.25 | 73.25 |
+| P2WSH (1) Alice spends   | 34  | 55.25 | 89.25 |
+| P2WSH (2) Bob spends     | 34  | 47.25 | 81.25 |
 | P2WSH (3) Mutual spend   | N/A | N/A   | N/A   |
 | Taproot (1) Alice spends | 35  | 58.50 | 93.50 |
 | Taproot (2) Bob spends   | 35  | 43.50 | 78.50 |
@@ -398,7 +396,8 @@ data they provide in either case is correct, the spend will be accepted.
 Because we chose to use a small tree and a simple example script, the
 cost of using Taproot script-path spending exceeds the cost of the data
 than can be omitted from the unspent branch, leading to slightly higher
-costs for Taproot in cases 1 and 2.  However, the mutual spend case is
+costs for Taproot in the case where Alice spends.  However, the case
+where Bob spends is slightly cheaper and the case of the mutual spend is
 significantly less expensive than any of the other options (and using it
 would completely hide that this was an HTLC).
 
@@ -423,8 +422,8 @@ changed, most notably:
   Because future soft forks can only add new rules by making
   previously-valid things invalid, this maximal validity
   today will allow maximal flexibility in future soft forks.  Of course,
-  receivers get to choose what scripts they receive payments to, so no
-  one who likes their money will include an `OP_SUCCESS` opcode in
+  receivers get to choose what scripts they use to receive payments, so no
+  one should include an `OP_SUCCESS` opcode in
   their scripts until a soft fork has given it a new consensus-enforced
   meaning.
 
@@ -433,38 +432,22 @@ changed, most notably:
 
 - **New script-based multisig semantics:** the current
   `OP_CHECKMULTISIG` and `OP_CHECKMULTISIGVERIFY` opcodes are not
-  available in Tapscript.  Instead, the existing single-sig
-  `OP_CHECKSIG` and `OP_CHECKSIGVERIFY` may be chained (see example
-  below); or a new `OP_CHECKSIGADD` opcode may be used to increment a
-  counter if a signature matches a specified public key (e.g. for
-  2-of-3, you need two `OP_CHECKSIGADD` calls to succeed).  This change
-  is made to allow for batch verification of multiple signatures, which
-  [bip-schnorr][] estimates can significantly speed up verification compared to
-  checking each signature independently.
+  available in Tapscript.  There are two alternatives.  First, the
+  existing single-sig `OP_CHECKSIG` and `OP_CHECKSIGVERIFY` may be used
+  in series.  For example (2-of-2 multisig):
 
-    Ideally, many multisig operations can use signature aggregation as
-    described in the multisig subsection above.  However, it may not be
-    obvious that there are many cases where k-of-n multisig can be done
-    using multiple k-of-k scripts each in a separate Taproot branch.
-    For example, consider the following 2-of-3 multisig Tapscript using
-    `OP_CHECKSIGADD` (`OP_CSADD`):
+        <Alice pubkey> OP_CHECKSIGVERIFY <Bob pubkey> OP_CHECKSIG
 
-        <A pubkey> OP_CSADD <B pubkey> OP_CSADD <C pubkey> OP_CSADD 2 OP_EQUAL
+    Second, a new `OP_CHECKSIGADD` (`OP_CSADD`) opcode may be used to
+    increment a counter if a signature matches a specified public key.
+    For example (2-of-3):
 
-    This may be more efficient as three different 2-of-2 multisig
-    scripts in a Taproot merkle tree, allowing whichever one is needed
-    to be chosen:
+        <A pubkey> OP_CHECKSIG <B pubkey> OP_CSADD <C pubkey> OP_CSADD OP_2 OP_EQUAL
 
-        (1) <A pubkey> OP_CHECKSIGVERIFY <B pubkey> OP_CHECKSIG
-        (2) <A pubkey> OP_CHECKSIGVERIFY <C pubkey> OP_CHECKSIG
-        (3) <B pubkey> OP_CHECKSIGVERIFY <C pubkey> OP_CHECKSIG
-
-    Similarly, even more efficiency could be gained using key and
-    signature aggregation in the script:
-
-        (1) <AggregatePubkey(<A pubkey>, <B pubkey>)> OP_CHECKSIG
-        (2) <AggregatePubkey(<A pubkey>, <C pubkey>)> OP_CHECKSIG
-        (3) <AggregatePubkey(<B pubkey>, <C pubkey>)> OP_CHECKSIG
+    This change is made to allow for batch verification of multiple
+    signatures, which can [significantly speed up
+    verification][bip-schnorr] compared to checking each signature
+    independently.
 
 - **No direct sigops limit:** because verifying signatures is the most
   CPU expensive operation in Bitcoin Script, an early version of Bitcoin
@@ -481,31 +464,23 @@ changed, most notably:
     transactions using Taproot spends include a certain amount of data
     for each sigop that succeeds.  The rule is one free sigop and then
     50 bytes of data for each additional sigop.  Since Schnorr
-    signatures are at least 64 bytes, this should be more than enough to
-    cover all expected uses.  However, if for some reason a transaction
-    does need to include a higher density of sigops, a special field
-    defined by bip-taproot (the *annex*) currently has no
-    consensus-enforced meaning and so can easily be stuffed with null
-    data to increase the transaction size.  The annex is part of the
-    transaction input so it doesn't bloat the UTXO set or need to be
-    stored by pruned nodes, making it the least harmful place to stuff
-    data.  The result of this change is that miners can simply include
-    the most profitable valid Taproot transactions in their blocks
-    without worrying about sigops.
+    signatures are at least 64 bytes, this should provide more than
+    enough space to cover all expected uses, and it means that miners
+    can simply include the most profitable valid Taproot transactions in
+    their blocks without worrying about sigops.
 
 ### Taproot and Tapscript summary and next steps
 
 Together, these proposals bring Bitcoin two features that developers
-have been wanting for years---application developers as well as core
-developers.  Schnorr signatures will make available immediate privacy
-and feerate savings for the increasing number of Bitcoin users taking
-advantage of multisig security (including LN users), and research into
-advanced uses of Schnorr such as [scriptless scripts][] and [discrete
-log contracts][] may enable many significant improvements in efficiency,
-privacy, and financial contracting without further necessary consensus
-changes.
+have been wanting for years.  The first of these features, Schnorr
+signatures, will make available increased privacy and reduced fees for
+the increasing number of Bitcoin users taking advantage of multisig
+security (including LN users), and research into advanced uses of
+Schnorr such as [scriptless scripts][] and [discrete log contracts][]
+may enable many significant improvements in efficiency, privacy, and
+financial contracting without further necessary consensus changes.
 
-On top of that, Taproot-based MAST allows developers to write scripts
+The second feature, Taproot-based MAST, allows developers to write scripts
 that are much more complex than are possible today but still minimize
 their onchain impact by allowing spenders to only put the minimum amount
 of data onchain---lowering the feerates for advanced users while also
@@ -555,19 +530,20 @@ being lowercase versus uppercase:
     FIXME: image
 
 This was a deliberate design feature of bech32.  QR codes can be created
-in several modes (most notably: numeric, uppercase alphanumeric, and
-binary), each one using more bits to represent each character.  Legacy
-addresses require mixed case, so their only option is to use the binary
-mode.  Bech32 addresses for Bitcoin[^only-bc] can use the more efficient
-uppercase alphanumeric character set when the address is capitalized,
-allowing the QR code to be less complex.
+in several modes that support different character sets.
+Legacy addresses require mixed case, so they use the binary
+mode.  However, Bech32 addresses for Bitcoin[^only-bc] be represented
+using only numbers and capital letters, so they can use the smaller
+uppercase alphanumeric character set.  Because this set is smaller, it
+uses fewer bits to encode each character in a QR code, allowing the
+resultant code to be less complex.
 
 Simple [BIP21][] URIs can also use all uppercase characters with bech32
 because [RFC3986][] specifies the URI scheme name is case insensitive.
 
     FIXME: image
 
-Unfortunately, the `?` and `&` needed for passing parameters in a BIP21
+Unfortunately, the `?` and `&` needed for passing additional parameters in a BIP21
 URI are not part of the QR code uppercase character set, so our QR
 encoder automatically switches back to binary mode when they are used.
 
@@ -610,6 +586,12 @@ addresses][News 44 bech32].
   meaning there will be no Win32 binaries for future versions of Bitcoin
   Core.  Evidence suggests that very few (if any) Bitcoin Core users are
   using 32-bit Windows.
+
+## Acknowledgements
+
+We thank Anthony Towns and Pieter Wuille for their insightful reviews of
+a draft of this newsletter's Taproot overview.  Any remaining errors are
+the fault of the author.
 
 ## Footnotes
 
