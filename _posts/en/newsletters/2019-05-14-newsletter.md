@@ -246,7 +246,7 @@ These are outputs that depend on a certain number of signatures from
 particular pubkeys but don't have any other conditions.  These are used
 both by individual users (e.g. requiring multiple devices to work
 together in a spend) and by multiple parties to a single transaction
-(e.g. escrows and LN funding transactions).
+(e.g. escrows).
 
 There are two ways to perform simple multisig spending using Taproot,
 the most efficient of which is key and signature aggregation as
@@ -455,7 +455,7 @@ changed, most notably:
   added a limit on the maximum number of signature-checking operations
   (sigops) a block could contain, and versions of this limit were
   applied to later P2SH and segwit v0 scripts.  However, one problem
-  with this limit is that it requires miners consider two factors when
+  with this limit is that miners must consider two factors when
   trying to select what valid transactions to include in a block:
   fee density (fee/vbyte) and sigop density (sigops/vbyte).  This is
   much more difficult than just optimizing block composition based on a
