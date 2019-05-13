@@ -1,4 +1,4 @@
-all: build #FIXME:rm_this test
+all: build test
 
 preview:
 	bundle exec jekyll clean

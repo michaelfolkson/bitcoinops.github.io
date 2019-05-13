@@ -30,13 +30,13 @@ notable changes in popular infrastructure projects.
 
 - **Soft fork discussion:** several replies were posted to the
   Bitcoin-Dev mailing list in response to [bip-taproot][] and
-  [bip-tapscript][].  Additionally, Anthony Towns [posted][] a proposal
-  for an additional soft fork change that uses bip-taproot features to
-  enable functionality similar in purpose to [BIP118][] SIGHASH_NOINPUT.
-  As this week's newsletter already includes a special section about
-  Taproot, we're deferring summaries of the feedback and extension to
-  next week's newsletter so readers can have some time to digest the
-  essentials of Taproot first.
+  [bip-tapscript][].  Additionally, Anthony Towns [posted][anyprevout
+  post] a proposal for an additional soft fork change that uses
+  bip-taproot features to enable functionality similar in purpose to
+  [BIP118][] SIGHASH_NOINPUT.  As this week's newsletter already
+  includes a special section about Taproot, we're deferring summaries of
+  the feedback and extension to next week's newsletter so readers can
+  have some time to digest the essentials of Taproot first.
 
 - **Addition of derivation paths to BIP174 PSBTs:** Stepan Snigirev
   [posted][psbt path] a suggestion to the Bitcoin-Dev mailing list to
@@ -49,11 +49,12 @@ notable changes in popular infrastructure projects.
 
 ## Overview of the Taproot & Tapscript proposed BIPs
 
-Last week, Pieter Wuille [emailed][] the Bitcoin-Dev mailing list with
-links to two proposed BIPs.  The first, [bip-taproot][], permits
-spending using either a Schnorr-style signature or merklized script. The
-second, [bip-tapscript][], defines a slight variation on Bitcoin's
-existing Script language to be used in bip-taproot merkle spends.
+Last week, Pieter Wuille [emailed][taproot post] the Bitcoin-Dev mailing
+list with links to two proposed BIPs.  The first, [bip-taproot][],
+permits spending using either a Schnorr-style signature or merklized
+script. The second, [bip-tapscript][], defines a slight variation on
+Bitcoin's existing Script language to be used in bip-taproot merkle
+spends.
 
 For readers already familiar with Bitcoin scripting and ideas like
 [MAST][], it should be possible to understand the BIPs directly.  For
@@ -80,17 +81,17 @@ take a moment to look at some things that aren't part of the proposals:
   Tapscript proposals become part of Bitcoin, we think developers will
   continue to look for ways to bring cross-input signature aggregation
   to Bitcoin in future soft forks, but they'll need to find ways to
-  address [complications][] that were discovered during their research
-  into the advanced techniques described by bip-taproot.  (See
-  [Newsletter #FIXME][] for related discussion in the context of
-  bip-schnorr.)
+  address [complications][sigagg complications] that were discovered
+  during their research into the advanced techniques described by
+  bip-taproot.  (See [Newsletter #3][] for related discussion in the
+  context of [bip-schnorr][].)
 
 - **No new sighash types:** although some existing sighash types are
   tweaked a bit, the proposals do not offer anything similar to
   [BIP118][] SIGHASH_NOINPUT.  However, bip-tapscript does provide a
   forward-compatibility mechanism (tagged public keys) that will make it
   easy for future soft forks to extend the signature-checking opcodes
-  with new sighash types or other changes.  FIXME:read AJ's thing
+  with new sighash types or other changes.
 
 - **No activation mechanism specified:** if users decide they want to
   begin enforcing the soft fork's new rules, safety requires that all
@@ -99,10 +100,9 @@ take a moment to look at some things that aren't part of the proposals:
   options have been described for potential future use.  However,
   bip-taproot doesn't mention any of these techniques.  Optech agrees
   with the primary author of the BIP that [activation discussion is
-  premature][FIXME: link to @pwuille tweet].  We first need to ensure
-  that there's widespread agreement that the proposals are safe and
-  desirable before we start a debate about the best way to activate
-  them.
+  premature][discuss activation].  We first need to ensure that there's
+  widespread agreement that the proposals are safe and desirable before
+  we start a debate about the best way to activate them.
 
 - **No changes to existing operations for wallets:** all Taproot
   features will be opt-in, so no existing wallet will need to change how
@@ -186,7 +186,7 @@ double-SHA256 (SHA256d) to a single SHA256 operation.  The extra hashing
 previously used isn't believed to have provided any meaningful security.
 Additionally, the data hashed is prefixed with a value that's specific
 to this use of the hash function; this helps prevent problems like
-[CVE-FIXME][] where a hash from one context can be used in another
+[CVE-2012-2459][] where a hash from one context can be used in another
 context.  The prefix tag is `SHA256(tag) || SHA256(tag)` where the tag
 in this case is the UTF-8 string "TapSighash" and `||` stands for
 concatenation.  Software that needs to create or verify a large number
@@ -242,7 +242,7 @@ find new methods and implement them in Bitcoin wallets without any
 consensus changes.  This is because the signature algorithm is only
 looking for a single pubkey and a single signature that are valid under
 rules described in the single-sig subsection above.  That said, of the
-methods known, the [MuSig protocol][] is probably the best studied
+methods known, the [MuSig protocol][musig] is probably the best studied
 aggregation protocol in the context of Bitcoin.
 
 The number of bytes used for aggregated keys and signatures is exactly
@@ -579,6 +579,19 @@ addresses][News 44 bech32].
     non-Bitcoin bech32 addresses.
 
 {% include references.md %}
-{% include linkers/issues.md issues="15487,15764,15323,15141,1888" %}
+{% include linkers/issues.md issues="15730,15930,2524,15939" %}
 [bech32 easy]: {{news38}}#bech32-sending-support
 [rfc3986]: https://tools.ietf.org/html/rfc3986#section-3.1
+[anyprevout post]: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2019-May/016929.html
+[psbt path]: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2019-April/016894.html
+[taproot post]: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2019-May/016914.html
+[mast]: https://bitcointechtalk.com/what-is-a-bitcoin-merklized-abstract-syntax-tree-mast-33fdf2da5e2f
+[sigagg complications]: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2018-March/015838.html
+[discuss activation]: https://twitter.com/pwuille/status/1125478777084006400
+[csprng]: https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator
+[hsms]: https://en.wikipedia.org/wiki/Hardware_security_module
+[musig]: https://blockstream.com/2018/01/23/en-musig-key-aggregation-schnorr-signatures/
+[scriptless scripts]: http://diyhpl.us/wiki/transcripts/layer2-summit/2018/scriptless-scripts/
+[discrete log contracts]: https://adiabat.github.io/dlc.pdf
+[example implementation]: https://github.com/sipa/bitcoin/commits/taproot
+[news 44 bech32]: {{news44}}#bech32-sending-support
