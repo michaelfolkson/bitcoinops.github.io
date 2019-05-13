@@ -116,20 +116,19 @@ take a moment to look at some things that aren't part of the proposals:
 To look at what's in the proposals, we'll primarily examine how existing
 use cases could be transferred to Taproot.  The best place to start is by
 looking at the way most wealth is transferred via the Bitcoin protocol
-right now: single-sig P2PKH and P2WPKH spends, which constitute FIXME:x%
-of all spends.  FIXME:p2sh.info-ref
+right now: single-sig P2PKH and P2WPKH spends.
 
 Single-sig P2WPKH wallets today currently generate a private key, derive
 a public key (pubkey) from it, and hash that pubkey to create the
 witness program for a bech32 address.  (P2PKH is functionally identical
 but uses a different script and a different address encoding.)
 
-| Object      | Operation                                                       | Example result |
+| Object      | Operation                                                       | Example result    |
 |-|-|-|
-| Private key | read 32 bytes from [CSPRNG][], or using [BIP32][] HD derivation | 0xFIXME |
-| Public key  | point(0xFIXME), or using [BIP32][] HD public derivation         | 0x02FIXME |
-| Hash        | ripemd(sha256(0x02FIXME))                                       | 0xFIXME |
-| Address     | bech32.encode(0, 0xFIXME)                                       | bc1qFIXME |
+| Private key | read 32 bytes from [CSPRNG][], or using [BIP32][] HD derivation | `0x807d[...]0101` |
+| Public key  | point(0x807d[...]0101), or using [BIP32][] HD public derivation | `0x02e5[...]3c23` |
+| Hash        | ripemd(sha256(0x0202e5[...]3c23))                               | `0x006e[...]05d6` |
+| Address     | bech32.encode('bc', 0, 0x006e[...]05d6)                         | `bc1qd6[...]24zh` |
 
 Under Taproot, the hashing step will be skipped and so the bech32
 address will contain the pubkey directly, with one small change.
@@ -140,20 +139,21 @@ is reduced by two so that 0x02 becomes 0x00 and 0x03 becomes 0x01,
 although the meaning is exactly the same.  Also the witness version is
 changed from the `0` used for P2WPKH/P2WSH to a `1`.
 
-| Object           | Operation                                                       | Example result |
-| Private key      | read 32 bytes from [CSPRNG][], or using [BIP32][] HD derivation | 0xFIXME |
-| Public key       | point(0xFIXME), or using [BIP32][] HD public derivation         | 0x02FIXME |
-| Alter key prefix | (key[0] - 2),key[1:33])                                         | 0x00FIXME |
-| Address          | bech32.encode(1, 0x00FIXME)                                     | bc1pFIXME |
+| Object           | Operation                               | Example result    |
+|-|-|-|
+| Private key      | (Same as above)                         | `0x807d[...]0101` |
+| Public key       | (Same as above)                         | `0x02e5[...]3c23` |
+| Alter key prefix | (key[0] - 2),key[1:33])                 | `0x00e5[...]3c23` |
+| Address          | bech32.encode('bc', 1, 0x00e5[...]3c23) | `bc1pqr[...]xg73` |
 
 Here's an example of existing addresses compared to an example taproot
 address.
 
-    p2pkh FIXME
-    p2sh FIXME
-    p2wpkh FIXME
-    p2wsh FIXME
-    taproot FIXME
+| P2PKH   | `1B6FkNg199ZbPJWG5zjEiDekrCc2P7MVyC`                              |
+| P2SH    | `3QsFXpFJf2ZY6GLWVoNFFd2xSDwdS713qX`                              |
+| P2WPKH  | `bc1qd6h6vp99qwstk3z668md42q0zc44vpwkk824zh`                      |
+| P2WSH   | `bc1q0jnggjwnn22a4ywxc2pcw86c0d6tghqkgk3hlryrxl7nmxkylmnq6smlx3`  |
+| Taproot | `bc1pqrj4788jx79yn3x3wpgks3h6ex3rqgs5tk5qyjreu24vjdgu3q7zxkxxg73` |
 
 Spending from P2PKH or P2WPKH requires the spender include their public
 key in their input.  For Taproot, the public key was provided in the
@@ -163,18 +163,47 @@ signature as defined by [bip-schnorr][] with an optional sighash byte
 appended.  If the default sighash is used, the signature is 64 bytes (16
 vbytes); if a non-default is used, it is 65 bytes (16.25
 vbytes[^vbytes-decimal]).  Overall, this makes the cost to create and
-spend a Taproot single-sig output about 1% more expensive than P2WPKH.
+spend a Taproot single-sig output about 5% more expensive than P2WPKH.
 However, the costs are distributed differently---it costs more to create
 a Taproot output than a P2WPKH output and less to spend it, which may
 help contribute towards keeping the size of the UTXO set manageable.
 
-                               FIXME:tablify
-                               Vbytes
-                           P2PKH          P2WPKH               Taproot
-    scriptPubKey           24             22                   33
-    scriptSig              1+33+1+72=107  0                    0
-    witness                0              (1+33+1+72)/4=26.75  (1+64)/4=16.25
-    TOTAL                  131            48.75                49.25
+<table style="text-align: center;">
+<tr>
+  <th style="border-bottom-style: none;"></th>
+  <th colspan="3">Vbytes</th>
+</tr>
+<tr>
+  <th style="border-top-style: none;"></th>
+  <th>P2PKH</th>
+  <th>P2WPKH</th>
+  <th>Taproot</th>
+</tr>
+<tr>
+  <th>scriptPubKey</th>
+  <td>25</td>
+  <td>22</td>
+  <td>35</td>
+</tr>
+<tr>
+  <th>scriptSig</th>
+  <td>1+33+1+72 = 107</td>
+  <td>0</td>
+  <td>0</td>
+</tr>
+<tr>
+  <th>witness</th>
+  <td>0</td>
+  <td>(1+33+1+72)/4 = 26.75</td>
+  <td>(1+64)/4 = 16.25</td>
+</tr>
+<tr>
+  <th>Total</th>
+  <td>132</td>
+  <td>48.75</td>
+  <td>51.25</td>
+</tr>
+</table>
 
 Besides the change from ECDSA to Schnorr for the signature algorithm,
 there are a few important (but easy to implement) changes to the
