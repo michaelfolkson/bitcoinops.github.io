@@ -189,15 +189,15 @@ cheaper than P2WPKH.
 </tr>
 <tr>
   <th>scriptSig</th>
-  <td>1+33+1+72 = 107</td>
+  <td>107</td>
   <td>0</td>
   <td>0</td>
 </tr>
 <tr>
   <th>witness</th>
   <td>0</td>
-  <td>(1+33+1+72)/4 = 26.75</td>
-  <td>(1+64)/4 = 16.25</td>
+  <td>26.75</td>
+  <td>16.25</td>
 </tr>
 <tr>
   <th>Total</th>
@@ -451,7 +451,7 @@ changed, most notably:
     verification][bip-schnorr] compared to checking each signature
     independently.
 
-- **No direct sigops limit:** because verifying signatures is the most
+- **Redefined sigops limit:** because verifying signatures is the most
   CPU expensive operation in Bitcoin Script, an early version of Bitcoin
   added a limit on the maximum number of signature-checking operations
   (sigops) a block could contain, and versions of this limit were
@@ -491,7 +491,7 @@ improving their privacy.
 Finally, because there's a strong chance that many single-sig,
 multisig, and MAST-based spends can all be resolved using nothing but a
 single public key and a single signature, it may become much harder to
-tell apart different transactions created by different users using
+track different users who are using
 different Bitcoin features---an advantage that benefits all Bitcoin
 users by making bitcoin ownership harder to track and thus bitcoins more
 fungible and harder to efficiently censor in piecemeal fashion.
@@ -503,7 +503,7 @@ features.  Following that, they will need to be implemented for full
 nodes, which will require more review and also extensive testing (an
 [example implementation][] is available, but it's currently meant to
 help proposal reviewers).  Finally, it will be up to the people who use
-their own full nodes to validate their incoming payments to decide
+their own full nodes for validating their incoming payments to decide
 whether or not they want to enforce this proposal.
 
 Optech doesn't know when---or if---any of those goals will be
@@ -582,7 +582,7 @@ addresses][News 44 bech32].
   sets of fields.  For balances the wallet can spend ("IsMine"), a
   `trusted` field for outputs either created by the wallet itself or
   which have at least one confirmation; an `untrusted_pending` field for
-  outputs in the mempool created by other users; and an `immature` field
+  outputs in the mempool that pay the wallet; and an `immature` field
   for outputs from a miner generation transaction that haven't yet
   received 100 confirmations (the earliest they can be spent).  For
   balances the wallet is only watching ("watchonly"), the same three
@@ -601,7 +601,7 @@ addresses][News 44 bech32].
 
 We thank Anthony Towns and Pieter Wuille for their insightful reviews of
 a draft of this newsletter's Taproot overview.  Any remaining errors are
-the fault of the author.
+the fault of the newsletter author.
 
 ## Footnotes
 
