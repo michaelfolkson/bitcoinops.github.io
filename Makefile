@@ -35,7 +35,7 @@ test-after-build:
 	! find _site/ -name '*.html' | xargs grep '\[^' | grep .
 
 	## Check for broken links
-	bundle exec htmlproofer --check-html --disable-external --url-ignore '/^\/bin/.*/' ./_site
+	bundle exec htmlproofer --check-html --disable-external --url-ignore '/FIXME' ./_site
 
 ## Tests to run last because they identify problems that may not be fixable during initial commit review.
 ## However, these should not be still failing when the site goes to production
