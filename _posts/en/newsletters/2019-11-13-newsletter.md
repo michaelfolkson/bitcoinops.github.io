@@ -20,7 +20,7 @@ popular Bitcoin infrastructure projects.
 
 ## Action items
 
-- **Upgrade Bitcoin Core:** users are encouraged to upgrade to the
+- **Upgrade to Bitcoin Core 0.19.0:** users are encouraged to upgrade to the
   latest [release][bitcoin core 0.19.0], which contains new features and
   multiple bug fixes.
 
@@ -32,7 +32,7 @@ popular Bitcoin infrastructure projects.
   list.  The vulnerability only affects users who have configured a
   SOCKS proxy to use either an untrusted server or to connect over an
   untrusted network.  Almost all affected versions of Bitcoin Core are
-  also affected by previously-disclosed vulnerabilities, such as
+  also affected by previously disclosed vulnerabilities, such as
   CVE-2016-10724 (see [Newsletter #1][news1 alert]) and CVE-2018-17144
   (see [Newsletter #14][news14 cve]), so users should have already
   upgraded to Bitcoin Core 0.16.3 or higher.
@@ -43,13 +43,13 @@ popular Bitcoin infrastructure projects.
 {% endcomment %}
 
 - **Bitcoin Core 0.19.0 released:** featuring over 1,000 commits from
-  contributors using more than 120 different names or pseudonyms, the
+  more than 100 contributors, the
   [latest Bitcoin Core release][bitcoin core 0.19.0] offers several new
   user-visible features, numerous bug fixes, and multiple improvements
-  to internal systems such P2P network handling.  Some changes which
+  to internal systems such as P2P network handling.  Some changes which
   may be especially interesting to newsletter readers include:
 
-    - *CPFP carve out:* this new mempool policy helps two-party contract
+    - *CPFP carve-out:* this new mempool policy helps two-party contract
       protocols (such as the current LN) ensure that both parties will
       be able to use Child-Pays-For-Parent (CPFP) fee bumping (see
       [Newsletter #63][news63 carve-out]).  LN developers already have a
@@ -79,9 +79,9 @@ popular Bitcoin infrastructure projects.
       version about six months from now.
 
     - **Customizable permissions for whitelisted peers:** when
-      specifying which peers or interfaces should be whitelisted, you
+      specifying which peers or interfaces should be whitelisted, users
       can now specify which special features the whitelisted peers
-      can access.  Previously whitelist peers wouldn't be banned and
+      can access.  Previously, whitelisted peers wouldn't be banned and
       received relayed transactions faster.  These defaults haven't
       changed, but now it's possible to toggle those settings on a
       per-peer basis or to allow specified whitelisted peers to request
@@ -91,26 +91,26 @@ popular Bitcoin infrastructure projects.
 
     - **GUI improvements:** graphical users can now create new wallets
       for use with multiwallet mode from the GUI's *file* menu (see
-      [Newsletter #63][news63 new wallet]).  The GUI will also provide
+      [Newsletter #63][news63 new wallet]).  The GUI also now provides
       users with bech32 Bitcoin addresses by default, but users can
       easily request a backwards-compatible P2SH-P2WPKH address by
-      toggling a checkbox (see [Newsletter #42][news42 core gui
+      toggling a checkbox next to the button to generate an address (see [Newsletter #42][news42 core gui
       bech32]).
 
     - **Optional privacy-preserving address management:** a new
       `avoid_reuse` wallet flag, which can be toggled using a new
-      `setwalletflags` RPC, can be enabled to prevent the wallet from
-      spending bitcoins received to an address that was previous
-      used.  This prevents anyone from associating multiple transactions
-      with each other just because they all used funds received to the
-      same address.
+      `setwalletflag` RPC, can be enabled to prevent the wallet from
+      spending bitcoins received to an address that was previously
+      used (see [Newsletter #52][news52 avoid_reuse]).  This prevents
+      certain privacy leaks based on block chain analysis such as [dust
+      flooding][].
 
     For a full list of notable changes, links to the PRs where those
     changes were made, and additional information useful to node
     operators, please see the Bitcoin Core project's [release notes][notes
     0.19.0].
 
-    Note, that (as of this writing) both released versions and the
+    Note that, as of this writing, both released versions and the
     master development branch of LND are not compatible with Bitcoin
     Core 0.19.0.  See [LND #3649][] for more information and for the
     status of whether LND has been upgraded to address the
@@ -126,7 +126,7 @@ popular Bitcoin infrastructure projects.
     One [question][why v1 flex] asked was about why taproot allows v1
     segwit scriptPubKeys to use fewer or more than 34 bytes---the amount
     needed for a Pay-to-Taproot (P2TR) scriptPubKey.  This seems odd
-    since [BIP141][] v0 segwit scriptPubKeys are only allowed the use
+    since [BIP141][] v0 segwit scriptPubKeys are only allowed to use
     the exactly 22 or 34 bytes needed for P2WPKH and P2WSH.  The
     response was that fewer restrictions will allow a later soft fork to
     define other uses for v1 scriptPubKeys with shorter or longer
@@ -134,7 +134,7 @@ popular Bitcoin infrastructure projects.
     longer v1 scriptPubKeys will be spendable by anyone (as they are
     today).
 
-    This started a discussion among experts about a recently-discovered
+    This started a discussion among experts about a recently discovered
     issue related to how this flexibility interacts with a somewhat
     older [issue][bech32 length change] discovered in the bech32 address
     encoding algorithm.  [BIP173][] bech32 addresses are supposed to
@@ -178,7 +178,9 @@ popular Bitcoin infrastructure projects.
     blog post][x-only pubkeys] about a recent major change to
     [bip-schnorr][] and [bip-taproot][] that reduced the size of
     serialized public keys from 33 bytes to 32 bytes without reducing
-    security.
+    security. See Newsletters [#59][news59 proposed 32B pubkeys] and
+    [#68][news68 taproot update] for previous discussion of this
+    optimization.
 
 - **Possible privacy leak in the LN onion format:** as described in
   [BOLT4][], LN uses the [Sphinx][] protocol to communicate payment
@@ -210,7 +212,7 @@ popular Bitcoin infrastructure projects.
     Russell proposed a mechanism that combines fees and hashcash-style
     proof-of-work to try to prevent nodes from using using the extra
     up-front payment information to guess the length of the route.
-    Anthony Towns proposed an partial [alternative][towns up-front]
+    Anthony Towns proposed a partial [alternative][towns up-front]
     focusing on managing payment amounts using a refund mechanism.
 
     Joost Jager suggested that up-front payments should only be required
@@ -319,6 +321,7 @@ popular Bitcoin infrastructure projects.
   bandwidth at present.
 
 {% include linkers/issues.md issues="16110,16899,17258,3246,3442,857,856,803,851,16442,3649,697,849,699" %}
+{% assign bse = "https://bitcoin.stackexchange.com/a/" %}
 [bitcoin core 0.19.0]: https://bitcoincore.org/bin/bitcoin-core-0.19.0/
 [x-only pubkeys]: https://medium.com/blockstream/reducing-bitcoin-transaction-sizes-with-x-only-pubkeys-f86476af05d7
 [news1 alert]: /en/newsletters/2018/06/26/#pending-dos-vulnerability-disclosure-for-bitcoin-core-0-12-0-and-earlier-altcoins-may-be-affected
@@ -358,3 +361,7 @@ popular Bitcoin infrastructure projects.
 [android bitcoin core]: https://github.com/greenaddress/abcore
 [news72 sphinx]: #possible-privacy-leak-in-the-ln-onion-format
 [bip179 genesis]: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2019-October/017369.html
+[news52 avoid_reuse]: /en/newsletters/2019/06/26/#bitcoin-core-13756
+[dust flooding]: {{bse}}81509
+[news59 proposed 32B pubkeys]: /en/newsletters/2019/08/14/#proposed-change-to-schnorr-pubkeys
+[news68 taproot update]: /en/newsletters/2019/10/16/#taproot-update
