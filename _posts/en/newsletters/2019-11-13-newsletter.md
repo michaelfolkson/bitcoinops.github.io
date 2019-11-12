@@ -7,8 +7,7 @@ type: newsletter
 layout: newsletter
 lang: en
 ---
-This week's newsletter announces the latest major release of Bitcoin
-Core and links to a security disclosure affecting some older releases,
+This week's newsletter announces a security disclosure affecting some older releases of Bitcoin Core,
 describes new developments related to taproot, mentions a potential
 privacy leak related to the LN payment data format, and describes two
 proposed changes to the LN specification that are under discussion.
@@ -20,9 +19,7 @@ popular Bitcoin infrastructure projects.
 
 ## Action items
 
-- **Upgrade to Bitcoin Core 0.19.0:** users are encouraged to upgrade to the
-  latest [release][bitcoin core 0.19.0], which contains new features and
-  multiple bug fixes.
+*None this week.*
 
 ## News
 
@@ -36,85 +33,6 @@ popular Bitcoin infrastructure projects.
   CVE-2016-10724 (see [Newsletter #1][news1 alert]) and CVE-2018-17144
   (see [Newsletter #14][news14 cve]), so users should have already
   upgraded to Bitcoin Core 0.16.3 or higher.
-
-{% comment %}
-<!-- commit count: git shortlog -no-merges -s v0.18.1..v0.19.0 | awk '{print $1}' | numsum
-     contributor count: wc -l on list in release notes -->
-{% endcomment %}
-
-- **Bitcoin Core 0.19.0 released:** featuring over 1,000 commits from
-  more than 100 contributors, the
-  [latest Bitcoin Core release][bitcoin core 0.19.0] offers several new
-  user-visible features, numerous bug fixes, and multiple improvements
-  to internal systems such as P2P network handling.  Some changes which
-  may be especially interesting to newsletter readers include:
-
-    - *CPFP carve-out:* this new mempool policy helps two-party contract
-      protocols (such as the current LN) ensure that both parties will
-      be able to use Child-Pays-For-Parent (CPFP) fee bumping (see
-      [Newsletter #63][news63 carve-out]).  LN developers already have a
-      proposal under discussion for how they'll use this feature to
-      simplify fee management for commitment transactions (see
-      newsletters [#70][news70 simple commits] and [#71][news71 ln carve-out]).
-
-    - *BIP158 block filters (RPC only):* users can now set a new
-      configuration option, `blockfilterindex`, if they want Bitcoin Core
-      to generate [BIP158][] compact block filters.  The filter for each
-      block can then be retrieved using the new RPC `getblockfilter`.
-      Filters can be provided to a compatible lightweight client to
-      allow it to determine whether a block might contain any
-      transactions involving its keys (see [Newsletter #43][news43
-      core bip158] for more information).  [PR#16442][Bitcoin Core
-      #16442] is currently open to add support for the corresponding
-      [BIP157][] protocol that will allow sharing these filters with
-      clients over the P2P network.
-
-    - **Deprecated or removed features:** support for the [BIP70][]
-      payment protocol, [BIP37][] P2P protocol bloom filters, and
-      [BIP61][] P2P protocol reject messages has been disabled by
-      default, eliminating the source of various problems (respectively,
-      see Newsletters [#19][news19 bip70], [#57][news57 bip37], and
-      [#37][news37 bip61]).  The payment protocol and reject messages
-      are scheduled to be fully removed in the next major Bitcoin Core
-      version about six months from now.
-
-    - **Customizable permissions for whitelisted peers:** when
-      specifying which peers or interfaces should be whitelisted, users
-      can now specify which special features the whitelisted peers
-      can access.  Previously, whitelisted peers wouldn't be banned and
-      received relayed transactions faster.  These defaults haven't
-      changed, but now it's possible to toggle those settings on a
-      per-peer basis or to allow specified whitelisted peers to request
-      BIP37 bloom filters even though they're disabled for
-      non-whitelisted peers by default.  For details, see [Newsletter
-      #60][news60 16248].
-
-    - **GUI improvements:** graphical users can now create new wallets
-      for use with multiwallet mode from the GUI's *file* menu (see
-      [Newsletter #63][news63 new wallet]).  The GUI also now provides
-      users with bech32 Bitcoin addresses by default, but users can
-      easily request a backwards-compatible P2SH-P2WPKH address by
-      toggling a checkbox next to the button to generate an address (see [Newsletter #42][news42 core gui
-      bech32]).
-
-    - **Optional privacy-preserving address management:** a new
-      `avoid_reuse` wallet flag, which can be toggled using a new
-      `setwalletflag` RPC, can be enabled to prevent the wallet from
-      spending bitcoins received to an address that was previously
-      used (see [Newsletter #52][news52 avoid_reuse]).  This prevents
-      certain privacy leaks based on block chain analysis such as [dust
-      flooding][].
-
-    For a full list of notable changes, links to the PRs where those
-    changes were made, and additional information useful to node
-    operators, please see the Bitcoin Core project's [release notes][notes
-    0.19.0].
-
-    Note that, as of this writing, both released versions and the
-    master development branch of LND are not compatible with Bitcoin
-    Core 0.19.0.  See [LND #3649][] for more information and for the
-    status of whether LND has been upgraded to address the
-    incompatibilities.
 
 - **Taproot review, discussion, and related information:** 163 people
   signed up for the structured taproot review mentioned in [Newsletter
@@ -249,6 +167,7 @@ popular Bitcoin infrastructure projects.
   website where we've mentioned a particular topic.  The index has been
   released with an initial set of 40 topics and we hope to increase that
   to about 100 topics over the next year.
+
 ## Notable code and documentation changes
 
 *Notable changes this week in [Bitcoin Core][bitcoin core repo],
