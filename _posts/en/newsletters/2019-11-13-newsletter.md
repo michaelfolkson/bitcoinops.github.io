@@ -162,7 +162,7 @@ popular Bitcoin infrastructure projects.
     scriptPubKeys, then it would be possible for a user to make a
     single-character mistake and lose all of the money they intended to
     spend.  Author of both BIP173 and the taproot proposal Pieter Wuille
-    [posted][wuille bech32 workaround] to the Bitcoin-Dev mailing some
+    [posted][wuille bech32 workaround] to the Bitcoin-Dev mailing list some
     options for addressing the problem and requested feedback on what
     options people would prefer to see implemented.  One option would be
     restricting all current bech32 implementations to rejecting any
