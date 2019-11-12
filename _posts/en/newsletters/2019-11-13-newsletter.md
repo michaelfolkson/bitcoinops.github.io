@@ -87,7 +87,7 @@ popular Bitcoin infrastructure projects.
       per-peer basis or to allow specified whitelisted peers to request
       BIP37 bloom filters even though they're disabled for
       non-whitelisted peers by default.  For details, see [Newsletter
-      #60][].
+      #60][news60 16248].
 
     - **GUI improvements:** graphical users can now create new wallets
       for use with multiwallet mode from the GUI's *file* menu (see
@@ -126,18 +126,19 @@ popular Bitcoin infrastructure projects.
     One [question][why v1 flex] asked was about why taproot allows v1
     segwit scriptPubKeys to use fewer or more than 34 bytes---the amount
     needed for a Pay-to-Taproot (P2TR) scriptPubKey.  This seems odd
-    since [BIP141][] v0 segwit scriptPubKeys are only allowed to use
-    the exactly 22 or 34 bytes needed for P2WPKH and P2WSH.  The
+    since [BIP141][] v0 native segwit scriptPubKeys are only allowed to use
+    exactly 22 bytes for P2WPKH or 34 bytes for P2WSH.  The
     response was that fewer restrictions will allow a later soft fork to
     define other uses for v1 scriptPubKeys with shorter or longer
     lengths.  In the meantime, if taproot is adopted, those shorter and
     longer v1 scriptPubKeys will be spendable by anyone (as they are
     today).
 
-    This started a discussion among experts about a recently discovered
-    issue related to how this flexibility interacts with a somewhat
-    older [issue][bech32 length change] discovered in the bech32 address
-    encoding algorithm.  [BIP173][] bech32 addresses are supposed to
+    This started a discussion among experts about how this flexibility
+    interacts with a an issue in the bech32 address encoding algorithm
+    that was [reported in May][bech32 length change] and recently
+    [described in detail][bse bech32 extension].  Bech32 addresses as
+    specified in [BIP173][] are supposed to
     guarantee that up to four errors will be detected in an incorrectly
     copied address and that only about one miscopied address in a
     billion that had five or more errors would go undetected.
@@ -210,7 +211,7 @@ popular Bitcoin infrastructure projects.
     This week, Rusty Russell started a [thread][russell up-front] on the
     Lightning-Dev mailing list to discuss proposals for up-front fees.
     Russell proposed a mechanism that combines fees and hashcash-style
-    proof-of-work to try to prevent nodes from using using the extra
+    proof-of-work to try to prevent nodes from using the extra
     up-front payment information to guess the length of the route.
     Anthony Towns proposed a partial [alternative][towns up-front]
     focusing on managing payment amounts using a refund mechanism.
@@ -236,7 +237,7 @@ popular Bitcoin infrastructure projects.
   Alice would pay the invoice, and Bob would provide the service.
 
     Early feedback on the proposal suggested that it might want to
-    incorporate by reference an established language for
+    use an established language for
     machine-readable invoices, such as the [Universal Business
     Language][] (UBL).  However, there was a concern that implementing
     the full UBL specification would be an excessive burden on developers
@@ -253,7 +254,7 @@ popular Bitcoin infrastructure projects.
   the GUI) for the Android Native Development Kit (NDK).  In contrast to
   independent projects like [Android Bitcoin Core][] (ABcore) that build
   their own Bitcoin Core binaries for Android NDK, adding support
-  directly to the Bitcoin Core project may simplify testing and could
+  directly to the Bitcoin Core project may simplify testing.  It could also
   allow future PRs to add the Android builds to the set of
   deterministically-generated executables that allow users to receive
   greater assurances that they are running the same well-reviewed code
@@ -337,7 +338,7 @@ popular Bitcoin infrastructure projects.
 [news42 core gui bech32]: /en/newsletters/2019/04/16/#bitcoin-core-15711
 [news69 taproot review]: /en/newsletters/2019/10/23/#taproot-review
 [sphinx]: https://cypherpunks.ca/~iang/pubs/Sphinx_Oakland09.pdf
-[news41 assumeutxo]: /en/newsletters/2019/04/09/
+[news41 assumeutxo]: /en/newsletters/2019/04/09/#discussion-about-an-assumed-valid-mechanism-for-utxo-snapshots
 [news27 multipath]: /en/newsletters/2018/12/28/#multipath-payments
 [news58 psbts]: /en/newsletters/2019/08/07/#bip174-extensibility
 [news37 signet]: /en/newsletters/2019/03/12/#feedback-requested-on-signet
@@ -353,7 +354,7 @@ popular Bitcoin infrastructure projects.
 [wuille bech32 workaround]: https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2019-November/017443.html
 [tr meet1]: http://www.erisian.com.au/meetbot/taproot-bip-review/2019/taproot-bip-review.2019-11-05-19.00.log.html
 [tr meet2]: http://www.erisian.com.au/meetbot/taproot-bip-review/2019/taproot-bip-review.2019-11-07-02.00.log.html
-[russell up-front]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2019-November/002275.html]
+[russell up-front]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2019-November/002275.html
 [towns up-front]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2019-November/002307.html
 [bolt offers]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2019-November/002276.html
 [osuntokun sphinx]: https://lists.linuxfoundation.org/pipermail/lightning-dev/2019-November/002288.html
@@ -365,3 +366,5 @@ popular Bitcoin infrastructure projects.
 [dust flooding]: {{bse}}81509
 [news59 proposed 32B pubkeys]: /en/newsletters/2019/08/14/#proposed-change-to-schnorr-pubkeys
 [news68 taproot update]: /en/newsletters/2019/10/16/#taproot-update
+[news60 16248]: /en/newsletters/2019/08/21/#bitcoin-core-16248
+[bse bech32 extension]: {{bse}}#91602
