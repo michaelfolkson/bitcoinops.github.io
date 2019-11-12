@@ -243,6 +243,12 @@ popular Bitcoin infrastructure projects.
     the full UBL specification would be an excessive burden on developers
     of LN software.
 
+- **New topic index on Optech website:** we [announced][topics
+  announcement] the addition of a topics index to the Optech website
+  that makes it easy for readers to find all the locations on the Optech
+  website where we've mentioned a particular topic.  The index has been
+  released with an initial set of 40 topics and we hope to increase that
+  to about 100 topics over the next year.
 ## Notable code and documentation changes
 
 *Notable changes this week in [Bitcoin Core][bitcoin core repo],
@@ -367,4 +373,5 @@ popular Bitcoin infrastructure projects.
 [news59 proposed 32B pubkeys]: /en/newsletters/2019/08/14/#proposed-change-to-schnorr-pubkeys
 [news68 taproot update]: /en/newsletters/2019/10/16/#taproot-update
 [news60 16248]: /en/newsletters/2019/08/21/#bitcoin-core-16248
-[bse bech32 extension]: {{bse}}#91602
+[bse bech32 extension]: {{bse}}91602
+[topics announcement]: /en/topics-announcement/
