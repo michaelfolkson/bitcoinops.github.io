@@ -46,7 +46,32 @@ FIXME
 Bitcoin presentations and discussions. In this monthly feature, we
 highlight a selection of the transcripts from the previous month.*
 
-FIXME:michaelfolkson
+**Magical Bitcoin**
+
+Alekos Filini presented at LA BitDevs on Magical Bitcoin, an early yet promising set of tools and libraries for onchain wallet developers. He explained that currently coin selection logic and transaction signing logic are having to be rewritten multiple times across multiple projects. Magical Bitcoin aims to provide peer reviewed, modular and extensible components to address this. A longer term ambition would be to provide a de facto standard platform to build native wallets and integrate wallets into existing projects. Filini demoed the current functionality of Magical Bitcoin which includes a playground with a Policy to Miniscript compiler and some rudimentary visualizations. It is written in Rust and leverages the rust-miniscript library and the open source Esplora block explorer.  ([transcript](https://diyhpl.us/wiki/transcripts/la-bitdevs/2020-05-21-alekos-filini-magical-bitcoin/), [video](https://www.youtube.com/watch?v=QVhC2DOIl7I))
+
+**Watchtowers and BOLT 13**
+
+Sergi Delgado appeared on Potzblitz to discuss the latest state of watchtower development and a proposed BOLT for a watchtower protocol specification. He explored the various trade-offs when designing a watchtower and the interplay between privacy requirements, accessibility, storage and fees charged. Delgado is working on the watchtower implementation “The Eye of Satoshi” at Talaia Labs which is aiming to be compliant with BOLT 13. However, BOLT 13 is still in draft form and requires review and feedback from the LN community. Delgado also highlighted how watchtowers are becoming increasingly critical in multiple settings such as Bitcoin vault designs, statechains and atomic swaps in addition to the initial Lightning setting.  ([transcript](https://diyhpl.us/wiki/transcripts/lightning-hack-day/2020-05-24-sergi-delgado-watchtowers/), [video](https://www.youtube.com/watch?v=Vkq9CVxMclE), [slides](https://srgi.me/resources/slides/Potzblitz!2020-Watchtowers.pdf))
+
+**CoinSwap**
+
+Aviv Milner presented on CoinSwap at the Wasabi Research Club. He explained the property of covertness and how Chris Belcher’s CoinSwap proposal provides covertness in a manner that other privacy schemes such as Coinjoin fail to do. Milner also went through the motivation for routing CoinSwaps, namely to address the concern of unwittingly entering into a CoinSwap with an adversary such a chain surveillance company.  ([transcript](https://diyhpl.us/wiki/transcripts/wasabi-research-club/2020-06-15-coinswap/), [video](https://www.youtube.com/watch?v=Pqz7_Eqw9jM))
+
+**Taproot and Schnorr Multisignatures**
+
+Tim Ruffing presented at London Bitcoin Devs on multisignature and threshold signature schemes using Schnorr signatures. He highlighted how the rogue key attack and an attack using Wagner’s algorithm need to be addressed when designing secure multisignature schemes. Ruffing has been working with collaborators on a speculative MuSig signature scheme that only requires two rounds of interaction rather than three without relying on zero knowledge proofs. Threshold signature schemes generally present further challenges such as requiring an honest majority, a broadcast channel and have historically been designed without considering parallel signing sessions.
+
+Ruffing’s presentation was preceded the previous day with a wide ranging discussion on BIP Schnorr (BIP 340) with some of the co-authors such as Ruffing, Pieter Wuille and Jonas Nick attending. This covered the history and evolution of BIP 340, some of the earlier ideas for implementing Schnorr in Bitcoin and what the co-authors thought the community should be concerned with when considering a possible future soft fork deployment. Wuille expressed his view that it is unlikely at this stage that there are bugs in the consensus implementation and that he is more concerned with how Schnorr is adopted and what is built using it than any underlying issues with the consensus implementation.
+
+([Meetup transcript](https://diyhpl.us/wiki/transcripts/london-bitcoin-devs/2020-06-16-socratic-seminar-bip-schnorr/), [Presentation transcript](https://diyhpl.us/wiki/transcripts/london-bitcoin-devs/2020-06-17-tim-ruffing-schnorr-multisig/), [Meetup video](https://www.youtube.com/watch?v=uE3lLsf38O4), [Presentation video](https://www.youtube.com/watch?v=8Op0Glp9Eoo), [Presentation slides](https://slides.com/real-or-random/taproot-and-schnorr-multisig))
+
+**Sydney meetup discussion**
+
+A number of Bitcoin developers and LN developers joined this Sydney meetup to discuss various topics. Ruben Somsen gave a short presentation on Succinct Atomic Swaps (SAS). Somsen explained how Succinct Atomic Swaps compared to Chris Belcher’s CoinSwap proposal, whether atomic swaps via privacy focused altcoins is a workable approach to obtain additional privacy and how SAS only requires one of the two blockchains to have script functionality and timelocks.
+
+Other non-related topics included reliance on DNS seeds in Bitcoin Core, whether they present a viable attack vector against new full nodes seeking to locate network peers for the very first time and resurfacing work by Matt Corallo and Antoine Riard on downloading block headers over HTTP and AltNet respectively, that could potentially mitigate this risk. Lloyd Fournier also discussed how experimenting with his toy Rust implementation of secp256k1 (secp256kfun) led to a small fix in the ECDSA signature code in the actual secp256k1 library. The transcript was anonymized to encourage open discussion.  ([transcript](https://diyhpl.us/wiki/transcripts/sydney-bitcoin-meetup/2020-06-23-socratic-seminar/))
+
 
 ## Releases and release candidates
 
